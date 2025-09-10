@@ -13,7 +13,7 @@ RUN sed -n 'p' /etc/apt/sources.list && \
 
 # ffmpeg, ristsender, python + pip, curl, certs
 RUN apt-get update && apt-get install -y \
-    ffmpeg python3 python3-pip curl ca-certificates rist-tools && \
+    ffmpeg python3 python3-pip curl ca-certificates rist-tools iproute2 tcpdump lsof && \
     rm -rf /var/lib/apt/lists/*
 
 # Кладём бинарь MediaMTX из слоя mtx

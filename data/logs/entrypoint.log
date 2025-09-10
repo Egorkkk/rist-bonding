@@ -1,0 +1,45 @@
+2025-09-10 23:11:48,375 INFO [START] mediamtx: ['/usr/local/bin/mediamtx', '/app/mediamtx.yml']
+2025-09-10 23:11:48,376 INFO [FFMPEG CMD] ffmpeg -hide_banner -nostats -re -f lavfi -i testsrc2=size=1280x720:rate=30,format=yuv420p -f lavfi -i sine=frequency=1000:sample_rate=48000 -map 0:v:0 -map 1:a:0 -c:v libx264 -preset veryfast -tune zerolatency -g 60 -keyint_min 60 -b:v 4000k -maxrate 4000k -bufsize 8000k -pix_fmt yuv420p -c:a aac -b:a 128k -ar 48000 -ac 2 -flush_packets 1 -pkt_size 1316 -muxrate 5000k -mpegts_flags +initial_discontinuity+resend_headers+pat_pmt_at_frames -muxdelay 0 -muxpreload 0 -f tee "tee:[f=mpegts]udp://127.0.0.1:10000|[f=mpegts]udp://127.0.0.1:10001|[f=mpegts]udp://127.0.0.1:10002|[f=mpegts]udp://127.0.0.1:10003|[f=mpegts]udp://127.0.0.1:10010|[f=flv]rtmp://127.0.0.1/live/stream"
+2025-09-10 23:11:48,376 INFO [START] ffmpeg: ffmpeg -hide_banner -nostats -re -f lavfi -i testsrc2=size=1280x720:rate=30,format=yuv420p -f lavfi -i sine=frequency=1000:sample_rate=48000 -map 0:v:0 -map 1:a:0 -c:v libx264 -preset veryfast -tune zerolatency -g 60 -keyint_min 60 -b:v 4000k -maxrate 4000k -bufsize 8000k -pix_fmt yuv420p -c:a aac -b:a 128k -ar 48000 -ac 2 -flush_packets 1 -pkt_size 1316 -muxrate 5000k -mpegts_flags +initial_discontinuity+resend_headers+pat_pmt_at_frames -muxdelay 0 -muxpreload 0 -f tee "tee:[f=mpegts]udp://127.0.0.1:10000|[f=mpegts]udp://127.0.0.1:10001|[f=mpegts]udp://127.0.0.1:10002|[f=mpegts]udp://127.0.0.1:10003|[f=mpegts]udp://127.0.0.1:10010|[f=flv]rtmp://127.0.0.1/live/stream"
+2025-09-10 23:11:48,376 INFO [RIST] idx=0 uid=972 gid=968 enabled=False cmd=None
+2025-09-10 23:11:48,376 INFO [RIST] idx=1 uid=971 gid=967 enabled=False cmd=None
+2025-09-10 23:11:48,377 INFO [RIST] idx=2 uid=970 gid=966 enabled=False cmd=None
+2025-09-10 23:11:48,377 INFO [RIST] idx=3 uid=969 gid=965 enabled=False cmd=None
+2025-09-10 23:11:48,380 INFO [mediamtx] 2025/09/10 23:11:48 INF MediaMTX v1.14.0
+2025-09-10 23:11:48,381 INFO [mediamtx] 2025/09/10 23:11:48 INF configuration loaded from /app/mediamtx.yml
+2025-09-10 23:11:48,381 INFO [mediamtx] 2025/09/10 23:11:48 INF [RTSP] listener opened on :8554 (TCP), :8000 (UDP/RTP), :8001 (UDP/RTCP)
+2025-09-10 23:11:48,381 INFO [mediamtx] 2025/09/10 23:11:48 INF [RTMP] listener opened on :1935
+2025-09-10 23:11:48,381 INFO [mediamtx] 2025/09/10 23:11:48 INF [HLS] listener opened on :8888
+2025-09-10 23:11:48,381 INFO [mediamtx] 2025/09/10 23:11:48 INF [WebRTC] listener opened on :8889 (HTTP), :8189 (ICE/UDP)
+2025-09-10 23:11:48,381 INFO [mediamtx] 2025/09/10 23:11:48 INF [SRT] listener opened on :8890 (UDP)
+2025-09-10 23:11:48,409 INFO [ffmpeg] Input #0, lavfi, from 'testsrc2=size=1280x720:rate=30,format=yuv420p':
+2025-09-10 23:11:48,409 INFO [ffmpeg]   Duration: N/A, start: 0.000000, bitrate: N/A
+2025-09-10 23:11:48,409 INFO [ffmpeg]   Stream #0:0: Video: wrapped_avframe, yuv420p, 1280x720 [SAR 1:1 DAR 16:9], 30 fps, 30 tbr, 30 tbn
+2025-09-10 23:11:48,409 INFO [ffmpeg] Input #1, lavfi, from 'sine=frequency=1000:sample_rate=48000':
+2025-09-10 23:11:48,409 INFO [ffmpeg]   Duration: N/A, start: 0.000000, bitrate: 768 kb/s
+2025-09-10 23:11:48,409 INFO [ffmpeg]   Stream #1:0: Audio: pcm_s16le, 48000 Hz, mono, s16, 768 kb/s
+2025-09-10 23:11:48,410 INFO [ffmpeg] Stream mapping:
+2025-09-10 23:11:48,410 INFO [ffmpeg]   Stream #0:0 -> #0:0 (wrapped_avframe (native) -> h264 (libx264))
+2025-09-10 23:11:48,410 INFO [ffmpeg]   Stream #1:0 -> #0:1 (pcm_s16le (native) -> aac (native))
+2025-09-10 23:11:48,410 INFO [ffmpeg] Press [q] to stop, [?] for help
+2025-09-10 23:11:48,410 INFO [ffmpeg] [libx264 @ 0x55f5d54f8000] using SAR=1/1
+2025-09-10 23:11:48,411 INFO [ffmpeg] [libx264 @ 0x55f5d54f8000] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+2025-09-10 23:11:48,413 INFO [ffmpeg] [libx264 @ 0x55f5d54f8000] profile High, level 3.1, 4:2:0, 8-bit
+2025-09-10 23:11:48,419 INFO [ffmpeg] [AVFormatContext @ 0x55f5d58471c0] Unable to choose an output format for 'tee:[f=mpegts]udp://127.0.0.1:10000'; use a standard extension for the filename or specify the format manually.
+2025-09-10 23:11:48,419 INFO [ffmpeg] [tee @ 0x55f5d54f7500] Slave muxer #0 failed: Invalid argument, continuing with 5/6 slaves.
+2025-09-10 23:11:48,419 INFO [mediamtx] 2025/09/10 23:11:48 INF [RTMP] [conn 127.0.0.1:43012] opened
+2025-09-10 23:11:48,544 INFO [ffmpeg] Output #0, tee, to 'tee:[f=mpegts]udp://127.0.0.1:10000|[f=mpegts]udp://127.0.0.1:10001|[f=mpegts]udp://127.0.0.1:10002|[f=mpegts]udp://127.0.0.1:10003|[f=mpegts]udp://127.0.0.1:10010|[f=flv]rtmp://127.0.0.1/live/stream':
+2025-09-10 23:11:48,544 INFO [ffmpeg]   Metadata:
+2025-09-10 23:11:48,544 INFO [ffmpeg]     encoder         : Lavf60.16.100
+2025-09-10 23:11:48,544 INFO [ffmpeg]   Stream #0:0: Video: h264, yuv420p(progressive), 1280x720 [SAR 1:1 DAR 16:9], q=2-31, 4000 kb/s, 30 fps, 30 tbn
+2025-09-10 23:11:48,544 INFO [ffmpeg]     Metadata:
+2025-09-10 23:11:48,544 INFO [ffmpeg]       encoder         : Lavc60.31.102 libx264
+2025-09-10 23:11:48,544 INFO [ffmpeg]     Side data:
+2025-09-10 23:11:48,544 INFO [ffmpeg]       cpb: bitrate max/min/avg: 4000000/0/4000000 buffer size: 8000000 vbv_delay: N/A
+2025-09-10 23:11:48,544 INFO [ffmpeg]   Stream #0:1: Audio: aac (LC), 48000 Hz, stereo, fltp, 128 kb/s
+2025-09-10 23:11:48,544 INFO [ffmpeg]     Metadata:
+2025-09-10 23:11:48,544 INFO [ffmpeg]       encoder         : Lavc60.31.102 aac
+2025-09-10 23:11:48,556 INFO [mediamtx] 2025/09/10 23:11:48 INF [RTMP] [conn 127.0.0.1:43012] closed: unable to parse H264 config: invalid size 1
+2025-09-10 23:11:48,559 INFO [ffmpeg] [flv @ 0x55f5d589c8c0] Failed to update header with correct duration.
+2025-09-10 23:11:48,560 INFO [ffmpeg] [flv @ 0x55f5d589c8c0] Failed to update header with correct filesize.
+2025-09-10 23:11:48,560 INFO [ffmpeg] [tee @ 0x55f5d54f7500] Slave muxer #5 failed: Connection reset by peer, continuing with 4/6 slaves.

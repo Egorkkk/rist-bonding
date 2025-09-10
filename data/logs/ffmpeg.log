@@ -1,0 +1,29 @@
+Input #0, lavfi, from 'testsrc2=size=1280x720:rate=30,format=yuv420p':
+  Duration: N/A, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: wrapped_avframe, yuv420p, 1280x720 [SAR 1:1 DAR 16:9], 30 fps, 30 tbr, 30 tbn
+Input #1, lavfi, from 'sine=frequency=1000:sample_rate=48000':
+  Duration: N/A, start: 0.000000, bitrate: 768 kb/s
+  Stream #1:0: Audio: pcm_s16le, 48000 Hz, mono, s16, 768 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (wrapped_avframe (native) -> h264 (libx264))
+  Stream #1:0 -> #0:1 (pcm_s16le (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x55f5d54f8000] using SAR=1/1
+[libx264 @ 0x55f5d54f8000] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x55f5d54f8000] profile High, level 3.1, 4:2:0, 8-bit
+[AVFormatContext @ 0x55f5d58471c0] Unable to choose an output format for 'tee:[f=mpegts]udp://127.0.0.1:10000'; use a standard extension for the filename or specify the format manually.
+[tee @ 0x55f5d54f7500] Slave muxer #0 failed: Invalid argument, continuing with 5/6 slaves.
+Output #0, tee, to 'tee:[f=mpegts]udp://127.0.0.1:10000|[f=mpegts]udp://127.0.0.1:10001|[f=mpegts]udp://127.0.0.1:10002|[f=mpegts]udp://127.0.0.1:10003|[f=mpegts]udp://127.0.0.1:10010|[f=flv]rtmp://127.0.0.1/live/stream':
+  Metadata:
+    encoder         : Lavf60.16.100
+  Stream #0:0: Video: h264, yuv420p(progressive), 1280x720 [SAR 1:1 DAR 16:9], q=2-31, 4000 kb/s, 30 fps, 30 tbn
+    Metadata:
+      encoder         : Lavc60.31.102 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 4000000/0/4000000 buffer size: 8000000 vbv_delay: N/A
+  Stream #0:1: Audio: aac (LC), 48000 Hz, stereo, fltp, 128 kb/s
+    Metadata:
+      encoder         : Lavc60.31.102 aac
+[flv @ 0x55f5d589c8c0] Failed to update header with correct duration.
+[flv @ 0x55f5d589c8c0] Failed to update header with correct filesize.
+[tee @ 0x55f5d54f7500] Slave muxer #5 failed: Connection reset by peer, continuing with 4/6 slaves.
