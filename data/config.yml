@@ -13,26 +13,34 @@ rist:
     cname: m0
     uid: 972
     gid: 968
-    weight: 25
-    enabled: true
+    weight: 0
+    enabled: false
+    interface: modem1
+    gateway: 192.168.8.1
   - id: 1
     cname: m1
     uid: 971
     gid: 967
     weight: 0
     enabled: false
+    interface: modem2
+    gateway: 192.168.14.1
   - id: 2
     cname: m2
     uid: 970
     gid: 966
     enabled: false
     weight: 0
+    interface: modem3
+    gateway: 192.168.38.1
   - id: 3
     cname: m3
     uid: 969
     gid: 965
     weight: 0
     enabled: false
+    interface: modem4
+    gateway: 192.168.11.1
 ingest:
   source: test
   uvc_device: /dev/video0

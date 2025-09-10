@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import logging
+from logging.handlers import RotatingFileHandler
 import os, sys, yaml, signal, threading, time, subprocess, shlex
 from http import HTTPStatus
 from flask import Flask, request, Response, redirect, url_for, jsonify
@@ -8,12 +10,65 @@ WEB_PORT = int(os.getenv("WEB_PORT", "8081"))
 
 app = Flask(__name__)
 
+os.makedirs("/data/logs", exist_ok=True)
+
+logger = logging.getLogger("rist-bonding")
+logger.setLevel(logging.INFO)
+
+# в файл
+fh = RotatingFileHandler("/data/logs/entrypoint.log", maxBytes=5*1024*1024, backupCount=2, encoding="utf-8")
+fh.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
+logger.addHandler(fh)
+
+# в stdout (docker logs)
+sh = logging.StreamHandler(sys.stdout)
+sh.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
+logger.addHandler(sh)
+
 procs = {
     "mediamtx": None,
     "ffmpeg": None,
     "rist": []  # list of Popen
 }
 lock = threading.RLock()
+
+def popen_logged(cmd, name, preexec=None):
+    """Запускает процесс, пишет stdout/stderr в /data/logs/{name}.log и в общий лог."""
+    logfile = f"/data/logs/{name}.log"
+    lf = open(logfile, "ab", buffering=0)
+
+    logger.info(f"[START] {name}: {cmd}")
+
+    p = subprocess.Popen(
+        cmd if isinstance(cmd, list) else cmd,
+        shell=isinstance(cmd, str),
+        preexec_fn=preexec,
+        stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1
+    )
+
+    def _pump():
+        try:
+            for line in iter(p.stdout.readline, b""):
+                lf.write(line)
+                try:
+                    logger.info(f"[{name}] {line.decode(errors='replace').rstrip()}")
+                except Exception:
+                    pass
+        finally:
+            try:
+                p.stdout.close()
+            except Exception:
+                pass
+            try:
+                lf.close()
+            except Exception:
+                pass
+            rc = p.poll()
+            logger.info(f"[EXIT] {name}: rc={rc}")
+
+    t = threading.Thread(target=_pump, daemon=True)
+    t.start()
+    return p
 
 def read_cfg():
     if not os.path.exists(CONFIG_PATH):
@@ -57,12 +112,14 @@ def build_ffmpeg_cmd(cfg):
     preset = v.get("preset", "veryfast")
 
     # 4 локальных UDP-выхода для ristsender
-    udp_targets = [
-        "[f=mpegts]udp://127.0.0.1:10000",
-        "[f=mpegts]udp://127.0.0.1:10001",
-        "[f=mpegts]udp://127.0.0.1:10002",
-        "[f=mpegts]udp://127.0.0.1:10003",
-    ]
+udp_targets = [
+    "[f=mpegts]udp://127.0.0.1:10000",
+    "[f=mpegts]udp://127.0.0.1:10001",
+    "[f=mpegts]udp://127.0.0.1:10002",
+    "[f=mpegts]udp://127.0.0.1:10003",
+    # мониторный порт:
+    "[f=mpegts]udp://127.0.0.1:10010"
+]
 
     outputs = udp_targets[:]
 
@@ -102,11 +159,14 @@ def build_ffmpeg_cmd(cfg):
     enc = f"-c:v libx264 -preset {preset} -tune zerolatency -g {gop} -keyint_min {gop} " \
           f"-b:v {vbit}k -maxrate {vbit}k -bufsize {vbit*2}k -pix_fmt yuv420p {acodec}"
 
+    ts_opts = "-flush_packets 1 -pkt_size 1316 -muxrate {}k -mpegts_flags +initial_discontinuity+resend_headers+pat_pmt_at_frames -muxdelay 0 -muxpreload 0".format(vbit + 1000)
+    # где vbit = video bitrate kbps; подгони при необходимости
+
+    # когда формируешь команду, добавь ts_opts:
     cmd = f"ffmpeg -hide_banner -nostats {src_args} -map 0:v:0"
-    if a.get("enable", True) and src == "test":
-        cmd += " -map 1:a:0"
-    cmd += f" {enc} -f tee \"{tee_arg}\""
-    return cmd
+    if a.get('enable', True) and src == 'test':
+          cmd += " -map 1:a:0"
+    cmd += f" {enc} {ts_opts} -f tee \"{tee_arg}\""
 
 def build_rist_cmds(cfg):
     r = cfg.get("rist", {})
@@ -130,7 +190,13 @@ def build_rist_cmds(cfg):
         cname = s.get("cname", f"m{idx}")
         weight = int(s.get("weight", 5))
 
-        params = [f"cname={cname}", f"profile={prof}", f"buffer={buf}", f"bandwidth={bw}", f"weight={weight}"]
+        params = [
+            f"cname={cname}",
+            f"profile={prof}",
+            f"buffer={buf}",
+            f"bandwidth={bw}",
+            f"weight={weight}"
+        ]
         if use_enc and etype in (128, 256):
             params += [f"encryption-type={etype}", f"secret={secret}"]
 
@@ -148,17 +214,19 @@ def start_all():
         if cfg.get("mediamtx", {}).get("enable", True):
             if procs["mediamtx"]:
                 kill_proc(procs["mediamtx"])
-            procs["mediamtx"] = subprocess.Popen(
+            procs["mediamtx"] = popen_logged(
                 ["/usr/local/bin/mediamtx", "/app/mediamtx.yml"],
-                stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+                name="mediamtx"
             )
+
 
         # FFmpeg
         if procs["ffmpeg"]:
             kill_proc(procs["ffmpeg"])
         ff_cmd = build_ffmpeg_cmd(cfg)
-        procs["ffmpeg"] = subprocess.Popen(
-            ff_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+        procs["ffmpeg"] = popen_logged(
+            ff_cmd, # shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+            name="ffmpeg"
         )
 
         # RIST senders
