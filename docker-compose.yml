@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  rist-bonding:
+    build:
+      context: .
+      args:
+        MEDIAMTX_VERSION: "latest"   # можно зафиксировать: v1.9.1 и т.п.
+    image: egorkkk/rist-bonding:latest
+    container_name: rist-bonding
+    network_mode: host               # ВАЖНО: чтобы OWNER-маркировка на хосте видела UID процесса
+    volumes:
+      - ./data:/data
+    environment:
+      - CONFIG_PATH=/data/config.yml
+      - WEB_PORT=8081
+    restart: unless-stopped

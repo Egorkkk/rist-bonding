@@ -1,0 +1,63 @@
+# Куда шлём RIST (MistServer или другой рист-приёмник)
+rist:
+  remote_ip: "203.0.113.10"   # IP Mist/MediаMTX с RIST входом
+  port: 8230                  # Чётный порт RIST (например 8230)
+  profile: "main"             # simple|main|advanced (обычно main)
+  buffer_ms: 100              # буфер рестрансляции (зависит от сети)
+  bandwidth_kbps: 8000        # верхняя граница (подсказывает librist/ffmpeg)
+  encryption:
+    enabled: true
+    type: 128                 # 0|128|256 (AES)
+    secret: "changeme"
+
+  # 4 отправителя RIST, каждый под своим UID/GID для маркировки на хосте
+  senders:
+    - id: 0
+      cname: "m0"
+      uid: 972
+      gid: 968
+    - id: 1
+      cname: "m1"
+      uid: 971
+      gid: 967
+    - id: 2
+      cname: "m2"
+      uid: 970
+      gid: 966
+    - id: 3
+      cname: "m3"
+      uid: 969
+      gid: 965
+
+# Источник видео, который FFmpeg будет кодировать и раздавать на 4 локальных UDP-порта
+ingest:
+  source: "test"              # test | uvc | rtmp_pull
+  # Для source=uvc
+  uvc_device: "/dev/video0"
+  # Для source=rtmp_pull (когда кто-то публикует в MediaMTX)
+  rtmp_pull_url: "rtmp://127.0.0.1/live/stream"
+
+# FFmpeg параметры кодирования
+video:
+  size: "1280x720"
+  fps: 30
+  bitrate_kbps: 4000
+  gop: 60
+  preset: "veryfast"
+
+audio:
+  enable: true
+  bitrate_kbps: 128
+  sample_rate: 48000
+
+# MediaMTX (локальный RTMP-сервер внутри контейнера)
+mediamtx:
+  enable: true
+  rtmp_listen: ":1935"
+  # опциональная простая публикация в RTMP для мониторинга
+  publish_rtmp_copy: true
+  publish_rtmp_url: "rtmp://127.0.0.1/live/stream"
+
+# Веб-интерфейс (raw редактирование YAML)
+ui:
+  listen: "0.0.0.0:8081"
