@@ -1,0 +1,56 @@
+rist:
+  remote_ip: 83.222.26.3
+  port: 8000
+  profile: main
+  buffer_ms: 1000
+  bandwidth_kbps: 8000
+  encryption:
+    enabled: false
+    type: 128
+    secret: pass123
+  senders:
+  - id: 0
+    cname: m0
+    uid: 972
+    gid: 968
+    weight: 25
+    enabled: true
+  - id: 1
+    cname: m1
+    uid: 971
+    gid: 967
+    weight: 0
+    enabled: false
+  - id: 2
+    cname: m2
+    uid: 970
+    gid: 966
+    enabled: false
+    weight: 0
+  - id: 3
+    cname: m3
+    uid: 969
+    gid: 965
+    weight: 0
+    enabled: false
+ingest:
+  source: test
+  uvc_device: /dev/video0
+  rtmp_pull_url: rtmp://127.0.0.1/live/stream
+video:
+  size: 1280x720
+  fps: 30
+  bitrate_kbps: 4000
+  gop: 60
+  preset: veryfast
+audio:
+  enable: true
+  bitrate_kbps: 128
+  sample_rate: 48000
+mediamtx:
+  enable: true
+  rtmp_listen: :1935
+  publish_rtmp_copy: true
+  publish_rtmp_url: rtmp://127.0.0.1/live/stream
+ui:
+  listen: 0.0.0.0:8081

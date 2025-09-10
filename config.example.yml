@@ -10,24 +10,32 @@ rist:
     type: 128                 # 0|128|256 (AES)
     secret: "changeme"
 
-  # 4 отправителя RIST, каждый под своим UID/GID для маркировки на хосте
-  senders:
+# 4 отправителя, каждый можно включать/выключать и настраивать weight
+senders:
     - id: 0
       cname: "m0"
       uid: 972
       gid: 968
+      enabled: true
+      weight: 5
     - id: 1
       cname: "m1"
       uid: 971
       gid: 967
+      enabled: true
+      weight: 5
     - id: 2
       cname: "m2"
       uid: 970
       gid: 966
+      enabled: true
+      weight: 5
     - id: 3
       cname: "m3"
       uid: 969
       gid: 965
+      enabled: true
+      weight: 5
 
 # Источник видео, который FFmpeg будет кодировать и раздавать на 4 локальных UDP-порта
 ingest:

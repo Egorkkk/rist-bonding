@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import os, sys, yaml, signal, threading, time, subprocess, shlex
 from http import HTTPStatus
-from flask import Flask, request, Response, redirect, url_for
+from flask import Flask, request, Response, redirect, url_for, jsonify
 
 CONFIG_PATH = os.getenv("CONFIG_PATH", "/data/config.yml")
 WEB_PORT = int(os.getenv("WEB_PORT", "8081"))
@@ -122,16 +122,23 @@ def build_rist_cmds(cfg):
 
     cmds = []
     for idx, s in enumerate(r.get("senders", [])):
+        if s.get("enabled", True) is False:
+            cmds.append((None, s.get("uid", 0), s.get("gid", 0), f"rist{idx}", False, idx))
+            continue
+
         inport = 10000 + idx
         cname = s.get("cname", f"m{idx}")
-        # ristsender синтаксис: -i udp://... -o rist://IP:PORT?... (см. wiki/manpage) :contentReference[oaicite:5]{index=5}
-        url_params = [f"cname={cname}", f"profile={prof}", f"buffer={buf}", f"bandwidth={bw}"]
+        weight = int(s.get("weight", 5))
+
+        params = [f"cname={cname}", f"profile={prof}", f"buffer={buf}", f"bandwidth={bw}", f"weight={weight}"]
         if use_enc and etype in (128, 256):
-            url_params += [f"encryption-type={etype}", f"secret={secret}"]
-        outurl = f"rist://{ip}:{port}?" + "&".join(url_params)
+            params += [f"encryption-type={etype}", f"secret={secret}"]
+
+        outurl = f"rist://{ip}:{port}?" + "&".join(params)
         cmd = f"ristsender -i udp://127.0.0.1:{inport} -o {outurl}"
-        cmds.append((cmd, s.get("uid", 0), s.get("gid", 0), f"rist{idx}"))
+        cmds.append((cmd, s.get("uid", 0), s.get("gid", 0), f"rist{idx}", True, idx))
     return cmds
+
 
 def start_all():
     with lock:
@@ -139,7 +146,6 @@ def start_all():
 
         # MediaMTX
         if cfg.get("mediamtx", {}).get("enable", True):
-            # Подкидываем наш минимальный конфиг
             if procs["mediamtx"]:
                 kill_proc(procs["mediamtx"])
             procs["mediamtx"] = subprocess.Popen(
@@ -159,13 +165,23 @@ def start_all():
         for p in procs["rist"]:
             kill_proc(p)
         procs["rist"].clear()
-        for cmd, uid, gid, name in build_rist_cmds(cfg):
-            # Запускаем под указанным UID/GID (для маркировки на хосте).
-            p = subprocess.Popen(
-                cmd, shell=True, preexec_fn=drop_priv(int(uid), int(gid)),
-                stdout=subprocess.PIPE, stderr=subprocess.STDOUT
-            )
-            procs["rist"].append(p)
+
+        tuples = build_rist_cmds(cfg)  # теперь: (cmd, uid, gid, name, enabled, idx)
+        # гарантируем длину списка procs["rist"] по количеству senders
+        max_idx = -1
+        for _cmd, _uid, _gid, _name, _enabled, _idx in tuples:
+            max_idx = max(max_idx, _idx)
+        procs["rist"] = [None] * (max_idx + 1)
+
+        for cmd, uid, gid, name, enabled, idx in tuples:
+            if enabled and cmd:
+                p = subprocess.Popen(
+                    cmd, shell=True, preexec_fn=drop_priv(int(uid), int(gid)),
+                    stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+                )
+                procs["rist"][idx] = p
+            # если выключен — просто оставляем None на этой позиции
+
 
 def stop_all():
     with lock:
@@ -178,34 +194,122 @@ def stop_all():
         procs["mediamtx"] = None
         procs["rist"] = []
 
+
+def start_sender(idx):
+    with lock:
+        cfg = read_cfg()
+        senders = cfg.get("rist", {}).get("senders", [])
+        if idx < 0 or idx >= len(senders):
+            return False, "bad index"
+        s = senders[idx]
+        if not s.get("enabled", True):
+            return False, "disabled in config"
+        # если уже есть процесс на этой позиции — убьём и перезапустим
+        if idx < len(procs["rist"]) and procs["rist"][idx] is not None:
+            kill_proc(procs["rist"][idx]); procs["rist"][idx] = None
+
+        # соберём команду только для этого индекса
+        tmp_cfg = {"rist": dict(cfg["rist"])}
+        tmp_cfg["rist"]["senders"] = [dict(x) for x in senders]
+        for i, X in enumerate(tmp_cfg["rist"]["senders"]):
+            X["enabled"] = (i == idx)
+
+        cmd_tuples = build_rist_cmds(tmp_cfg)
+        cmd, uid, gid, name, enabled, _ = cmd_tuples[idx]
+        if not enabled or not cmd:
+            return False, "not enabled/empty"
+        p = subprocess.Popen(cmd, shell=True, preexec_fn=drop_priv(int(uid), int(gid)),
+                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        # убедимся, что массив достаточно длинный
+        while len(procs["rist"]) <= idx:
+            procs["rist"].append(None)
+        procs["rist"][idx] = p
+        return True, "started"
+
+def stop_sender(idx):
+    with lock:
+        if idx < 0 or idx >= len(procs["rist"]):
+            return False, "bad index"
+        kill_proc(procs["rist"][idx])
+        procs["rist"][idx] = None
+        return True, "stopped"
+
+
 @app.route("/", methods=["GET"])
 def index():
-    cfg = ""
+    cfg_text = ""
     try:
         with open(CONFIG_PATH, "r", encoding="utf-8") as f:
-            cfg = f.read()
+            cfg_text = f.read()
     except FileNotFoundError:
-        cfg = ""
+        cfg_text = ""
+    cfg = yaml.safe_load(cfg_text) if cfg_text else {}
+    senders = cfg.get("rist", {}).get("senders", [])
+    # Сформируем простую таблицу
+    rows = ""
+    for i, s in enumerate(senders):
+        enabled = bool(s.get("enabled", True))
+        weight = int(s.get("weight", 5))
+        status = "—"
+        if i < len(procs["rist"]):
+            status = "running" if (procs["rist"][i] and procs["rist"][i].poll() is None) else "stopped"
+        btn_label = "Выключить" if enabled else "Включить"
+        rows += f"""
+        <tr>
+          <td>{i}</td>
+          <td>{s.get('cname', f"m{i}")}</td>
+          <td>{s.get('uid')}/{s.get('gid')}</td>
+          <td>{'on' if enabled else 'off'}</td>
+          <td>{status}</td>
+          <td>
+            <form method="POST" action="/toggle" style="display:inline">
+              <input type="hidden" name="sender" value="{i}">
+              <input type="hidden" name="action" value="{'disable' if enabled else 'enable'}">
+              <button type="submit">{btn_label}</button>
+            </form>
+          </td>
+          <td>
+            <form method="POST" action="/set_weight" style="display:inline">
+              <input type="hidden" name="sender" value="{i}">
+              <input type="number" min="0" max="25" name="weight" value="{weight}">
+              <button type="submit">Применить</button>
+            </form>
+          </td>
+        </tr>
+        """
     html = f"""
-    <html><head><meta charset="utf-8"><title>RIST Bonding Config</title>
+    <html><head><meta charset="utf-8"><title>RIST Bonding</title>
     <style>
-      body {{ font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; max-width: 1200px; margin: 20px auto; }}
-      textarea {{ width: 100%; height: 70vh; }}
-      .row {{ display:flex; gap:10px; margin-top:10px; }}
-      button {{ padding:10px 16px; }}
+      body {{ font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; max-width: 1100px; margin: 20px auto; }}
+      textarea {{ width: 100%; height: 50vh; }}
+      table {{ border-collapse: collapse; width: 100%; }}
+      th, td {{ border: 1px solid #ddd; padding: 8px; text-align:left; }}
+      th {{ background:#f5f5f5; }}
+      .row {{ display:flex; gap:10px; margin:10px 0; }}
+      button {{ padding:6px 10px; }}
       .hint {{ color:#666; font-size:0.9em; }}
     </style></head><body>
+    <h2>RIST senders</h2>
+    <table>
+      <thead><tr>
+        <th>#</th><th>CNAME</th><th>UID/GID</th><th>Enabled</th><th>Status</th><th>Toggle</th><th>Weight</th>
+      </tr></thead>
+      <tbody>
+        {rows}
+      </tbody>
+    </table>
     <h2>Raw config editor</h2>
     <form method="POST" action="/save">
-      <textarea name="cfg">{cfg}</textarea>
+      <textarea name="cfg">{cfg_text}</textarea>
       <div class="row">
-        <button type="submit">Сохранить и перезапустить</button>
-        <a href="/status">Статус</a>
+        <button type="submit">Сохранить и перезапустить всё</button>
+        <a href="/status">Статус (JSON)</a>
       </div>
     </form>
     <p class="hint">Файл: {CONFIG_PATH}</p>
     </body></html>"""
     return Response(html, mimetype="text/html")
+
 
 @app.route("/save", methods=["POST"])
 def save():
@@ -226,18 +330,87 @@ def save():
 @app.route("/status", methods=["GET"])
 def status():
     with lock:
-        def stat(p):
-            if p is None:
-                return "stopped"
-            rc = p.poll()
-            return "running" if rc is None else f"exited({rc})"
+        cfg = read_cfg()
+        senders = cfg.get("rist", {}).get("senders", [])
+        def stat(p): return ("running" if (p and p.poll() is None) else "stopped")
+        items = []
+        for i, s in enumerate(senders):
+            p = procs["rist"][i] if i < len(procs["rist"]) else None
+            items.append({
+                "id": s.get("id", i),
+                "enabled": bool(s.get("enabled", True)),
+                "weight": int(s.get("weight", 5)),
+                "uid": s.get("uid"),
+                "gid": s.get("gid"),
+                "status": stat(p)
+            })
         data = {
-            "mediamtx": stat(procs.get("mediamtx")),
-            "ffmpeg": stat(procs.get("ffmpeg")),
-            "rist_count": len(procs.get("rist", [])),
-            "rist": [stat(p) for p in procs.get("rist", [])]
+            "mediamtx": ("running" if (procs.get("mediamtx") and procs["mediamtx"].poll() is None) else "stopped"),
+            "ffmpeg":  ("running" if (procs.get("ffmpeg") and procs["ffmpeg"].poll() is None) else "stopped"),
+            "senders": items
         }
-        return data
+        return jsonify(data)
+
+@app.route("/toggle", methods=["POST"])
+def toggle_sender():
+    try:
+        idx = int(request.form.get("sender"))
+        action = request.form.get("action", "toggle")  # 'enable'/'disable'/'toggle'
+    except Exception:
+        return Response("bad params", status=400)
+
+    cfg = read_cfg()
+    senders = cfg.get("rist", {}).get("senders", [])
+    if idx < 0 or idx >= len(senders):
+        return Response("bad index", status=400)
+
+    current = bool(senders[idx].get("enabled", True))
+    if action == "toggle":
+        newval = not current
+    elif action == "enable":
+        newval = True
+    elif action == "disable":
+        newval = False
+    else:
+        return Response("bad action", status=400)
+
+    senders[idx]["enabled"] = newval
+    # сохраним и перезапустим только этот sender
+    with open(CONFIG_PATH, "w", encoding="utf-8") as f:
+        yaml.safe_dump(cfg, f, allow_unicode=True, sort_keys=False)
+
+    if newval:
+        ok, msg = start_sender(idx)
+    else:
+        ok, msg = stop_sender(idx)
+    return redirect(url_for("index"))
+
+@app.route("/set_weight", methods=["POST"])
+def set_weight():
+    try:
+        idx = int(request.form.get("sender"))
+        weight = int(request.form.get("weight"))
+    except Exception:
+        return Response("bad params", status=400)
+    if weight < 0 or weight > 25:
+        return Response("weight out of range (1..1000)", status=400)
+
+    cfg = read_cfg()
+    senders = cfg.get("rist", {}).get("senders", [])
+    if idx < 0 or idx >= len(senders):
+        return Response("bad index", status=400)
+    senders[idx]["weight"] = weight
+
+    # сохранить и мягко перезапустить только этот sender
+    with open(CONFIG_PATH, "w", encoding="utf-8") as f:
+        yaml.safe_dump(cfg, f, allow_unicode=True, sort_keys=False)
+
+    # если включён — перезапустить с новым weight
+    if senders[idx].get("enabled", True):
+        stop_sender(idx)
+        start_sender(idx)
+
+    return redirect(url_for("index"))
 
 def sigterm(_sig, _frm):
     stop_all()
