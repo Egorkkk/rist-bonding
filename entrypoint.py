@@ -330,22 +330,25 @@ def build_ffmpeg_cmd(cfg):
 def build_rist_cmds(cfg):
     r = cfg.get("rist", {}) or {}
     ip = r.get("remote_ip")
-    port = int(r.get("port", 8230))
-    prof = r.get("profile", "main")
-    buf = int(r.get("buffer_ms", 100))
-    bw = int(r.get("bandwidth_kbps", 8000))
-    enc = r.get("encryption", {}) or {}
-    use_enc = enc.get("enabled", True)
-    etype = int(enc.get("type", 128))
-    secret = enc.get("secret", "changeme")
+    port = int(r.get("port", 8000))
 
-    # НОВОЕ: одинаковый stream-id для всех sender'ов
-    # приоритет: rist.stream_id → stream.name → "obs"
-    stream_section = (cfg.get("stream", {}) or {})
-    stream_id = (r.get("stream_id")
-                 or stream_section.get("name")
-                 or "obs")
-    stream_id = str(stream_id).strip()
+    prof = (r.get("profile") or "main").strip().lower()
+    buf_ms = int(r.get("buffer_ms", 800))
+    bw_kbps = int(r.get("bandwidth_kbps", 12000))
+
+    # Новые опции из конфига:
+    stream_id = int(r.get("stream_id", 1000))
+    if stream_id % 2:
+        stream_id += 1  # Mist/TSRIST требует чётный ID
+
+    reorder_ms = int(r.get("reorder_buffer_ms", 120))
+    rtt_min = int(r.get("rtt_min_ms", 80))
+    rtt_max = int(r.get("rtt_max_ms", rtt_min))
+
+    enc = r.get("encryption", {}) or {}
+    use_enc = bool(enc.get("enabled", False))
+    aes_type = int(enc.get("type", 128))
+    secret = (enc.get("secret") or "").strip()
 
     cmds = []
     for idx, s in enumerate(r.get("senders", [])):
@@ -360,18 +363,23 @@ def build_rist_cmds(cfg):
         params = [
             f"cname={cname}",
             f"profile={prof}",
-            f"buffer={buf}",
-            f"bandwidth={bw}",
+            f"buffer={buf_ms}",
+            f"bandwidth={bw_kbps}",
             f"weight={weight}",
-            f"stream-id={stream_id}",   # ← ключевая строка
+            f"stream-id={stream_id}",
+            f"reorder-buffer={reorder_ms}",
+            f"rtt-min={rtt_min}",
+            f"rtt-max={rtt_max}",
         ]
-        if use_enc and etype in (128, 256):
-            params += [f"encryption-type={etype}", f"secret={secret}"]
+        # Шифрование уместно только вне simple-профиля
+        if prof != "simple" and use_enc and aes_type in (128, 256) and secret:
+            params += [f"aes-type={aes_type}", f"secret={secret}"]
 
         outurl = f"rist://{ip}:{port}?" + "&".join(params)
         cmd = f"ristsender -i udp://127.0.0.1:{inport} -o {outurl}"
         cmds.append((cmd, s.get("uid", 0), s.get("gid", 0), f"rist{idx}", True, idx))
     return cmds
+
 
 # -----------------------------
 # LIFECYCLE

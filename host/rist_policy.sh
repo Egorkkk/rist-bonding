@@ -3,6 +3,10 @@ set -euo pipefail
 # set -x   # включить при отладке
 
 # ====== НАСТРОЙКИ ======
+LP1=40010; LP2=40011; LP3=40012; LP4=40013
+DST=83.222.26.3
+DPORT=8000
+
 IF1="modem1"; GW1="192.168.8.1";   IP1="192.168.8.198";  NET1="192.168.8.0/24"
 IF2="modem2"; GW2="192.168.14.1";  IP2="192.168.14.100"; NET2="192.168.14.0/24"
 IF3="modem3"; GW3="192.168.38.1";  IP3="192.168.38.100"; NET3="192.168.38.0/24"
@@ -57,6 +61,25 @@ EOF
   sysctl --system >/dev/null
 }
 
+add_snat_rule() {
+  local uid="$1" iface="$2" ip="$3" lport="$4"
+  # SNAT для именно этого назначения/порта и интерфейса
+  iptables -t nat -C POSTROUTING -p udp -d "$DST" --dport "$DPORT" -m owner --uid-owner "$uid" -o "$iface" \
+    -j SNAT --to-source "$ip:$lport" 2>/dev/null || \
+  iptables -t nat -A POSTROUTING -p udp -d "$DST" --dport "$DPORT" -m owner --uid-owner "$uid" -o "$iface" \
+    -j SNAT --to-source "$ip:$lport"
+}
+
+del_snat_rule() {
+  local uid="$1" iface="$2" ip="$3" lport="$4"
+  while iptables -t nat -C POSTROUTING -p udp -d "$DST" --dport "$DPORT" -m owner --uid-owner "$uid" -o "$iface" \
+        -j SNAT --to-source "$ip:$lport" 2>/dev/null; do
+    iptables -t nat -D POSTROUTING -p udp -d "$DST" --dport "$DPORT" -m owner --uid-owner "$uid" -o "$iface" \
+      -j SNAT --to-source "$ip:$lport" || true
+  done
+}
+
+
 cleanup_policy() {
   echo "[*] Cleanup: ip rule (fwmark)…"
   while read -r MARK TABN TABNAME; do
@@ -97,6 +120,12 @@ EOF
   iptables_del_all_matching "-m owner --uid-owner $U2 -j CONNMARK --save-mark"
   iptables_del_all_matching "-m owner --uid-owner $U3 -j CONNMARK --save-mark"
   iptables_del_all_matching "-m owner --uid-owner $U4 -j CONNMARK --save-mark"
+  
+  echo "[*] Cleanup: NAT SNAT rules…"
+  del_snat_rule "$U1" "$IF1" "$IP1" "$LP1"
+  del_snat_rule "$U2" "$IF2" "$IP2" "$LP2"
+  del_snat_rule "$U3" "$IF3" "$IP3" "$LP3"
+  del_snat_rule "$U4" "$IF4" "$IP4" "$LP4"
 }
 
 iptables_del_all_matching() {
@@ -128,6 +157,16 @@ add_default_route_src() {
   ip route replace default via "$gw" dev "$dev" src "$srcip" table "$table_name"
 }
 
+# Добавь рядом с add_ip_rule_from/fwmark:
+add_ip_rule_uidrange() {
+  local uid="$1" table_name="$2" pref="$3"
+  if ip rule help 2>&1 | grep -q '\buidrange\b'; then
+    ip rule replace pref "$pref" uidrange "$uid-$uid" table "$table_name"
+  else
+    echo "WARNING: 'ip rule uidrange' not supported on this system" >&2
+  fi
+}
+
 add_ip_rule_fwmark() {
   local mark="$1" table_name="$2" pref="$3"
   if ip rule help 2>&1 | grep -q '\breplace\b'; then
@@ -157,6 +196,15 @@ main() {
   echo "[*] Cleanup старых правил/маршрутов…"; cleanup_policy
 
   echo "[*] Policy rules…"
+  
+  
+  echo "[*] Policy rules (uidrange → from → fwmark)…"
+  # uidrange — самый высокий приоритет (чтобы src выбрался правильно на connect())
+  add_ip_rule_uidrange "$U1" "$N1" 1050
+  add_ip_rule_uidrange "$U2" "$N2" 1051
+  add_ip_rule_uidrange "$U3" "$N3" 1052
+  add_ip_rule_uidrange "$U4" "$N4" 1053
+
   # from — выше приоритет (меньше pref), fwmark — ниже
   add_ip_rule_from "$IP1" "$N1" 1101
   add_ip_rule_from "$IP2" "$N2" 1102
@@ -188,6 +236,12 @@ main() {
   iptables -t mangle -A OUTPUT -m owner --uid-owner "$U3" -j CONNMARK --save-mark
   iptables -t mangle -A OUTPUT -m owner --uid-owner "$U4" -j MARK --set-mark "$M4"
   iptables -t mangle -A OUTPUT -m owner --uid-owner "$U4" -j CONNMARK --save-mark
+  
+  echo "[*] NAT: SNAT src IP:PORT per RIST sender…"
+  add_snat_rule "$U1" "$IF1" "$IP1" "$LP1"
+  add_snat_rule "$U2" "$IF2" "$IP2" "$LP2"
+  add_snat_rule "$U3" "$IF3" "$IP3" "$LP3"
+  add_snat_rule "$U4" "$IF4" "$IP4" "$LP4"
 
   echo "[*] Done."
 }

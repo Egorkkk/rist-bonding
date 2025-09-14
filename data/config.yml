@@ -1,14 +1,17 @@
 stream:
-  name: obs         # будет использовано как stream-id, если явно не задан rist.stream_id
+  name: obs
 rist:
   remote_ip: 83.222.26.3
   port: 8000
   profile: main
-  buffer_ms: 1000
-  bandwidth_kbps: 8000
-  stream_id: obs    # можно явно, чтобы не зависеть от stream.name
+  buffer_ms: 800
+  bandwidth_kbps: 6000
+  stream_id: 1000
+  reorder_buffer_ms: 120
+  rtt_min_ms: 80
+  rtt_max_ms: 80
   encryption:
-    enabled: false
+    enabled: true
     type: 128
     secret: pass123
   senders:
@@ -16,7 +19,7 @@ rist:
     cname: m0
     uid: 972
     gid: 968
-    weight: 5
+    weight: 10
     enabled: true
     interface: modem1
     gateway: 192.168.8.1
@@ -67,37 +70,39 @@ ui:
   listen: 0.0.0.0:8081
 ffmpeg:
   ingest:
-    source: test          # test | uvc | rtmp_pull
+    source: test
     size: 1280x720
     fps: 30
     ffmpeg.video.insert_aud: false
     uvc_device: /dev/video0
     rtmp_pull_url: rtmp://127.0.0.1/obs/stream
-
   video:
     codec: libx264
     preset: veryfast
     tune: zerolatency
     pix_fmt: yuv420p
     bitrate_kbps: 4000
-    maxrate_kbps: 4000     # по умолчанию = bitrate_kbps
-    bufsize_kbps: 8000     # по умолчанию = 2 * bitrate_kbps
-    fps: 30                # по умолчанию из ingest.fps
-    gop: 30                # по умолчанию = fps * 2
-    force_keyint_sec: 1    # принудительный IDR каждые 1с
-    insert_aud: true       # добавить AUD в поток (улучшает ловлю декодерами)
-    x264_params: "scenecut=0:open_gop=0:repeat-headers=1"
-
+    maxrate_kbps: 4000
+    bufsize_kbps: 8000
+    fps: 30
+    gop: 30
+    force_keyint_sec: 1
+    insert_aud: true
+    x264_params: scenecut=0:open_gop=0:repeat-headers=1
   audio:
     enable: true
     codec: aac
     bitrate_kbps: 128
     sample_rate: 48000
     channels: 2
-
   tee:
-    udp_ports: [10000, 10001, 10002, 10003, 10010]
-    mpegts_flags: "+resend_headers+pat_pmt_at_frames"   # можно и полной формой: "mpegts_flags=+resend_headers+pat_pmt_at_frames"
+    udp_ports:
+    - 10000
+    - 10001
+    - 10002
+    - 10003
+    - 10010
+    mpegts_flags: +resend_headers+pat_pmt_at_frames
     pkt_size: 1316
     publish_rtmp_copy: true
-    publish_rtmp_url: "rtmp://127.0.0.1:1935/obs"
+    publish_rtmp_url: rtmp://127.0.0.1:1935/obs
