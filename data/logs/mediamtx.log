@@ -548,3 +548,57 @@
 2025/09/14 20:45:46 INF [RTMP] [conn 127.0.0.1:38002] is publishing to path 'obs', 2 tracks (H264, MPEG-4 Audio)
 2025/09/14 20:45:51 INF [HLS] [muxer obs] created (requested by 192.168.0.192:64441)
 2025/09/14 20:45:51 INF [HLS] [muxer obs] is converting into HLS, 2 tracks (MPEG-4 Audio, H264)
+2025/09/14 21:12:56 INF shutting down gracefully
+2025/09/14 21:12:56 INF [SRT] listener is closing
+2025/09/14 21:12:56 INF [WebRTC] listener is closing
+2025/09/14 21:12:56 INF [HLS] listener is closing
+2025/09/14 21:12:56 INF [HLS] [muxer obs] destroyed: terminated
+2025/09/14 21:12:56 INF [RTMP] listener is closing
+2025/09/14 21:12:56 INF [RTMP] [conn 127.0.0.1:38002] closed: terminated
+2025/09/14 21:12:56 INF [RTSP] listener is closing
+2025/09/14 21:12:56 INF waiting for running hooks
+2025/09/14 21:12:56 INF MediaMTX v1.14.0
+2025/09/14 21:12:56 INF configuration loaded from /app/mediamtx.yml
+2025/09/14 21:12:56 INF [RTSP] listener opened on :8554 (TCP), :8000 (UDP/RTP), :8001 (UDP/RTCP)
+2025/09/14 21:12:56 INF [RTMP] listener opened on :1935
+2025/09/14 21:12:56 INF [HLS] listener opened on :8888
+2025/09/14 21:12:56 INF [WebRTC] listener opened on :8889 (HTTP), :8189 (ICE/UDP)
+2025/09/14 21:12:56 INF [SRT] listener opened on :8890 (UDP)
+2025/09/14 21:12:56 INF [RTMP] [conn 127.0.0.1:38328] opened
+2025/09/14 21:12:57 INF [HLS] [muxer obs] created (requested by 192.168.0.192:51296)
+2025/09/14 21:12:57 INF [HLS] [muxer obs] destroyed: no stream is available on path 'obs'
+2025/09/14 21:12:58 INF [RTMP] [conn 127.0.0.1:38328] is publishing to path 'obs', 2 tracks (H264, MPEG-4 Audio)
+2025/09/14 21:13:43 INF shutting down gracefully
+2025/09/14 21:13:43 INF [SRT] listener is closing
+2025/09/14 21:13:43 INF [WebRTC] listener is closing
+2025/09/14 21:13:43 INF [HLS] listener is closing
+2025/09/14 21:13:43 INF [RTMP] listener is closing
+2025/09/14 21:13:43 INF [RTMP] [conn 127.0.0.1:38328] closed: terminated
+2025/09/14 21:13:43 INF [RTSP] listener is closing
+2025/09/14 21:13:43 INF waiting for running hooks
+2025/09/14 21:14:12 INF MediaMTX v1.14.0
+2025/09/14 21:14:12 INF configuration loaded from /app/mediamtx.yml
+2025/09/14 21:14:12 INF [RTSP] listener opened on :8554 (TCP), :8000 (UDP/RTP), :8001 (UDP/RTCP)
+2025/09/14 21:14:12 INF [RTMP] listener opened on :1935
+2025/09/14 21:14:12 INF [HLS] listener opened on :8888
+2025/09/14 21:14:12 INF [WebRTC] listener opened on :8889 (HTTP), :8189 (ICE/UDP)
+2025/09/14 21:14:12 INF [SRT] listener opened on :8890 (UDP)
+2025/09/14 21:14:12 INF [RTMP] [conn 127.0.0.1:45008] opened
+2025/09/14 21:14:14 INF [RTMP] [conn 127.0.0.1:45008] is publishing to path 'obs', 2 tracks (H264, MPEG-4 Audio)
+2025/09/14 21:15:39 INF shutting down gracefully
+2025/09/14 21:15:39 INF [SRT] listener is closing
+2025/09/14 21:15:39 INF [WebRTC] listener is closing
+2025/09/14 21:15:39 INF [HLS] listener is closing
+2025/09/14 21:15:39 INF [RTMP] listener is closing
+2025/09/14 21:15:39 INF [RTMP] [conn 127.0.0.1:45008] closed: terminated
+2025/09/14 21:15:39 INF [RTSP] listener is closing
+2025/09/14 21:15:39 INF waiting for running hooks
+2025/09/14 21:16:13 INF MediaMTX v1.14.0
+2025/09/14 21:16:13 INF configuration loaded from /app/mediamtx.yml
+2025/09/14 21:16:13 INF [RTSP] listener opened on :8554 (TCP), :8000 (UDP/RTP), :8001 (UDP/RTCP)
+2025/09/14 21:16:13 INF [RTMP] listener opened on :1935
+2025/09/14 21:16:13 INF [HLS] listener opened on :8888
+2025/09/14 21:16:13 INF [WebRTC] listener opened on :8889 (HTTP), :8189 (ICE/UDP)
+2025/09/14 21:16:13 INF [SRT] listener opened on :8890 (UDP)
+2025/09/14 21:16:13 INF [RTMP] [conn 127.0.0.1:47320] opened
+2025/09/14 21:16:15 INF [RTMP] [conn 127.0.0.1:47320] is publishing to path 'obs', 2 tracks (H264, MPEG-4 Audio)

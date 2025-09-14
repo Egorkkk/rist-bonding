@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-#set -x   # включи при отладке
+# set -x   # включить при отладке
 
 # ====== НАСТРОЙКИ ======
 IF1="modem1"; GW1="192.168.8.1";   IP1="192.168.8.198";  NET1="192.168.8.0/24"
@@ -13,7 +13,7 @@ T1=100; T2=101; T3=102; T4=103
 
 # Метки для ristsender по UID
 M1=0x10; M2=0x11; M3=0x12; M4=0x13
-U1=972; U2=971; U3=970; U4=969
+U1=972;  U2=971;  U3=970;  U4=969
 
 # Имена таблиц
 N1="modem1"; N2="modem2"; N3="modem3"; N4="modem4"
@@ -21,15 +21,13 @@ N1="modem1"; N2="modem2"; N3="modem3"; N4="modem4"
 
 require_root() {
   if [ "$(id -u)" -ne 0 ]; then
-    echo "This script must be run as root (or via sudo)." >&2
-    exit 1
+    echo "Run as root." >&2; exit 1
   fi
 }
 
 write_rt_tables_file() {
   mkdir -p /etc/iproute2
   if [ -d /etc/iproute2/rt_tables.d ]; then
-    mkdir -p /etc/iproute2/rt_tables.d
     cat > /etc/iproute2/rt_tables.d/99-rist-bonding.conf <<EOF
 $T1 $N1
 $T2 $N2
@@ -47,22 +45,21 @@ EOF
   fi
 }
 
+# LOOSE rp_filter (=2) на интерфейсах + «all»
 write_sysctl() {
   cat >/etc/sysctl.d/99-rist-bonding.conf <<EOF
-net.ipv4.conf.all.rp_filter = 0
-net.ipv4.conf.${IF1}.rp_filter = 0
-net.ipv4.conf.${IF2}.rp_filter = 0
-net.ipv4.conf.${IF3}.rp_filter = 0
-net.ipv4.conf.${IF4}.rp_filter = 0
+net.ipv4.conf.all.rp_filter = 2
+net.ipv4.conf.${IF1}.rp_filter = 2
+net.ipv4.conf.${IF2}.rp_filter = 2
+net.ipv4.conf.${IF3}.rp_filter = 2
+net.ipv4.conf.${IF4}.rp_filter = 2
 EOF
   sysctl --system >/dev/null
 }
 
-# Удаление наших ip rule и очистка таблиц
 cleanup_policy() {
   echo "[*] Cleanup: ip rule (fwmark)…"
   while read -r MARK TABN TABNAME; do
-    # удаляем любые варианты lookup (по имени или номеру)
     while ip rule show | grep -Eq "fwmark[[:space:]]+$MARK.*lookup[[:space:]]+($TABN|$TABNAME)"; do
       ip rule del fwmark "$MARK" table "$TABNAME" 2>/dev/null || ip rule del fwmark "$MARK" table "$TABN" || true
     done
@@ -85,11 +82,21 @@ $IP3 $T3 $N3
 $IP4 $T4 $N4
 EOF
 
-  echo "[*] Cleanup: ip route tables…"
+  echo "[*] Cleanup: route tables…"
   ip route flush table "$N1" || ip route flush table "$T1" || true
   ip route flush table "$N2" || ip route flush table "$T2" || true
   ip route flush table "$N3" || ip route flush table "$T3" || true
   ip route flush table "$N4" || ip route flush table "$T4" || true
+
+  echo "[*] Cleanup: iptables OUTPUT rules…"
+  iptables_del_all_matching "-m owner --uid-owner $U1 -j MARK --set-mark $M1"
+  iptables_del_all_matching "-m owner --uid-owner $U2 -j MARK --set-mark $M2"
+  iptables_del_all_matching "-m owner --uid-owner $U3 -j MARK --set-mark $M3"
+  iptables_del_all_matching "-m owner --uid-owner $U4 -j MARK --set-mark $M4"
+  iptables_del_all_matching "-m owner --uid-owner $U1 -j CONNMARK --save-mark"
+  iptables_del_all_matching "-m owner --uid-owner $U2 -j CONNMARK --save-mark"
+  iptables_del_all_matching "-m owner --uid-owner $U3 -j CONNMARK --save-mark"
+  iptables_del_all_matching "-m owner --uid-owner $U4 -j CONNMARK --save-mark"
 }
 
 iptables_del_all_matching() {
@@ -104,7 +111,7 @@ get_iface_ip() {
   ip -o -4 addr show dev "$dev" 2>/dev/null | awk '{print $4}' | cut -d/ -f1 | head -n1
 }
 
-# connected-route в таблицу (если IP ещё нет — без src)
+# connected-route в таблицу (с src, если интерфейс уже поднят)
 add_link_route() {
   local table_name="$1" subnet="$2" dev="$3"
   local actual_src; actual_src="$(get_iface_ip "$dev" || true)"
@@ -115,9 +122,10 @@ add_link_route() {
   fi
 }
 
-add_route() {
-  local table_name="$1" gw="$2" dev="$3"
-  ip route replace default via "$gw" dev "$dev" table "$table_name"
+# ВАЖНО: default с явным src, чтобы ответ шёл с IP интерфейса
+add_default_route_src() {
+  local table_name="$1" gw="$2" dev="$3" srcip="$4"
+  ip route replace default via "$gw" dev "$dev" src "$srcip" table "$table_name"
 }
 
 add_ip_rule_fwmark() {
@@ -143,23 +151,13 @@ add_ip_rule_from() {
 main() {
   require_root
 
-  echo "[*] rt_tables mapping…"
-  write_rt_tables_file
+  echo "[*] rt_tables mapping…"; write_rt_tables_file
+  echo "[*] Sysctl (rp_filter=2)…"; write_sysctl
 
-  echo "[*] Sysctl (rp_filter=0)…"
-  write_sysctl
+  echo "[*] Cleanup старых правил/маршрутов…"; cleanup_policy
 
-  echo "[*] Cleanup старых правил/маршрутов…"
-  cleanup_policy
-
-  echo "[*] Удаляем старые iptables правила (если были)…"
-  iptables_del_all_matching "-m owner --uid-owner $U1 -j MARK --set-mark $M1"
-  iptables_del_all_matching "-m owner --uid-owner $U2 -j MARK --set-mark $M2"
-  iptables_del_all_matching "-m owner --uid-owner $U3 -j MARK --set-mark $M3"
-  iptables_del_all_matching "-m owner --uid-owner $U4 -j MARK --set-mark $M4"
-
-  echo "[*] Добавляем policy rules…"
-  # from — приоритет выше (меньше pref), fwmark — ниже
+  echo "[*] Policy rules…"
+  # from — выше приоритет (меньше pref), fwmark — ниже
   add_ip_rule_from "$IP1" "$N1" 1101
   add_ip_rule_from "$IP2" "$N2" 1102
   add_ip_rule_from "$IP3" "$N3" 1103
@@ -170,24 +168,28 @@ main() {
   add_ip_rule_fwmark "$M3" "$N3" 1202
   add_ip_rule_fwmark "$M4" "$N4" 1203
 
-  echo "[*] Маршруты по таблицам…"
+  echo "[*] Routes per table…"
   add_link_route "$N1" "$NET1" "$IF1"
   add_link_route "$N2" "$NET2" "$IF2"
   add_link_route "$N3" "$NET3" "$IF3"
   add_link_route "$N4" "$NET4" "$IF4"
 
-  add_route "$N1" "$GW1" "$IF1"
-  add_route "$N2" "$GW2" "$IF2"
-  add_route "$N3" "$GW3" "$IF3"
-  add_route "$N4" "$GW4" "$IF4"
+  add_default_route_src "$N1" "$GW1" "$IF1" "$IP1"
+  add_default_route_src "$N2" "$GW2" "$IF2" "$IP2"
+  add_default_route_src "$N3" "$GW3" "$IF3" "$IP3"
+  add_default_route_src "$N4" "$GW4" "$IF4" "$IP4"
 
-  echo "[*] iptables маркировка по UID…"
+  echo "[*] iptables маркировка по UID (+save CONNMARK)…"
   iptables -t mangle -A OUTPUT -m owner --uid-owner "$U1" -j MARK --set-mark "$M1"
+  iptables -t mangle -A OUTPUT -m owner --uid-owner "$U1" -j CONNMARK --save-mark
   iptables -t mangle -A OUTPUT -m owner --uid-owner "$U2" -j MARK --set-mark "$M2"
+  iptables -t mangle -A OUTPUT -m owner --uid-owner "$U2" -j CONNMARK --save-mark
   iptables -t mangle -A OUTPUT -m owner --uid-owner "$U3" -j MARK --set-mark "$M3"
+  iptables -t mangle -A OUTPUT -m owner --uid-owner "$U3" -j CONNMARK --save-mark
   iptables -t mangle -A OUTPUT -m owner --uid-owner "$U4" -j MARK --set-mark "$M4"
+  iptables -t mangle -A OUTPUT -m owner --uid-owner "$U4" -j CONNMARK --save-mark
 
-  echo "[*] Готово."
+  echo "[*] Done."
 }
 
 main "$@"

@@ -892,3 +892,79 @@ Output #0, tee, to '[f=mpegts:mpegts_flags=+resend_headers+pat_pmt_at_frames]udp
   Stream #0:1: Audio: aac (LC), 48000 Hz, stereo, fltp, 128 kb/s
     Metadata:
       encoder         : Lavc60.31.102 aac
+Input #0, lavfi, from 'testsrc2=size=1280x720:rate=30,format=yuv420p':
+  Duration: N/A, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: wrapped_avframe, yuv420p, 1280x720 [SAR 1:1 DAR 16:9], 30 fps, 30 tbr, 30 tbn
+Input #1, lavfi, from 'sine=frequency=1000:sample_rate=48000':
+  Duration: N/A, start: 0.000000, bitrate: 768 kb/s
+  Stream #1:0: Audio: pcm_s16le, 48000 Hz, mono, s16, 768 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (wrapped_avframe (native) -> h264 (libx264))
+  Stream #1:0 -> #0:1 (pcm_s16le (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x55a1acc9f2c0] using SAR=1/1
+[libx264 @ 0x55a1acc9f2c0] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x55a1acc9f2c0] profile High, level 3.1, 4:2:0, 8-bit
+[libx264 @ 0x55a1acc9f2c0] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=1 ref=1 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=2 psy=1 psy_rd=1.00:0.00 mixed_ref=0 me_range=16 chroma_me=1 trellis=0 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=0 threads=11 lookahead_threads=11 sliced_threads=1 slices=11 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=0 weightp=1 keyint=30 keyint_min=16 scenecut=0 intra_refresh=0 rc_lookahead=0 rc=cbr mbtree=0 bitrate=4000 ratetol=1.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 vbv_maxrate=4000 vbv_bufsize=8000 nal_hrd=none filler=0 ip_ratio=1.40 aq=1:1.00
+Output #0, tee, to '[f=mpegts:mpegts_flags=+resend_headers+pat_pmt_at_frames]udp://127.0.0.1:10000?pkt_size=1316|[f=mpegts:mpegts_flags=+resend_headers+pat_pmt_at_frames]udp://127.0.0.1:10001?pkt_size=1316|[f=mpegts:mpegts_flags=+resend_headers+pat_pmt_at_frames]udp://127.0.0.1:10002?pkt_size=1316|[f=mpegts:mpegts_flags=+resend_headers+pat_pmt_at_frames]udp://127.0.0.1:10003?pkt_size=1316|[f=mpegts:mpegts_flags=+resend_headers+pat_pmt_at_frames]udp://127.0.0.1:10010?pkt_size=1316|[f=flv:flvflags=no_duration_filesize]rtmp://127.0.0.1:1935/obs':
+  Metadata:
+    encoder         : Lavf60.16.100
+  Stream #0:0: Video: h264, yuv420p(progressive), 1280x720 [SAR 1:1 DAR 16:9], q=2-31, 4000 kb/s, 30 fps, 30 tbn
+    Metadata:
+      encoder         : Lavc60.31.102 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 4000000/0/4000000 buffer size: 8000000 vbv_delay: N/A
+  Stream #0:1: Audio: aac (LC), 48000 Hz, stereo, fltp, 128 kb/s
+    Metadata:
+      encoder         : Lavc60.31.102 aac
+Input #0, lavfi, from 'testsrc2=size=1280x720:rate=30,format=yuv420p':
+  Duration: N/A, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: wrapped_avframe, yuv420p, 1280x720 [SAR 1:1 DAR 16:9], 30 fps, 30 tbr, 30 tbn
+Input #1, lavfi, from 'sine=frequency=1000:sample_rate=48000':
+  Duration: N/A, start: 0.000000, bitrate: 768 kb/s
+  Stream #1:0: Audio: pcm_s16le, 48000 Hz, mono, s16, 768 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (wrapped_avframe (native) -> h264 (libx264))
+  Stream #1:0 -> #0:1 (pcm_s16le (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x55fdc6b902c0] using SAR=1/1
+[libx264 @ 0x55fdc6b902c0] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x55fdc6b902c0] profile High, level 3.1, 4:2:0, 8-bit
+[libx264 @ 0x55fdc6b902c0] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=1 ref=1 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=2 psy=1 psy_rd=1.00:0.00 mixed_ref=0 me_range=16 chroma_me=1 trellis=0 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=0 threads=11 lookahead_threads=11 sliced_threads=1 slices=11 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=0 weightp=1 keyint=30 keyint_min=16 scenecut=0 intra_refresh=0 rc_lookahead=0 rc=cbr mbtree=0 bitrate=4000 ratetol=1.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 vbv_maxrate=4000 vbv_bufsize=8000 nal_hrd=none filler=0 ip_ratio=1.40 aq=1:1.00
+Output #0, tee, to '[f=mpegts:mpegts_flags=+resend_headers+pat_pmt_at_frames]udp://127.0.0.1:10000?pkt_size=1316|[f=mpegts:mpegts_flags=+resend_headers+pat_pmt_at_frames]udp://127.0.0.1:10001?pkt_size=1316|[f=mpegts:mpegts_flags=+resend_headers+pat_pmt_at_frames]udp://127.0.0.1:10002?pkt_size=1316|[f=mpegts:mpegts_flags=+resend_headers+pat_pmt_at_frames]udp://127.0.0.1:10003?pkt_size=1316|[f=mpegts:mpegts_flags=+resend_headers+pat_pmt_at_frames]udp://127.0.0.1:10010?pkt_size=1316|[f=flv:flvflags=no_duration_filesize]rtmp://127.0.0.1:1935/obs':
+  Metadata:
+    encoder         : Lavf60.16.100
+  Stream #0:0: Video: h264, yuv420p(progressive), 1280x720 [SAR 1:1 DAR 16:9], q=2-31, 4000 kb/s, 30 fps, 30 tbn
+    Metadata:
+      encoder         : Lavc60.31.102 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 4000000/0/4000000 buffer size: 8000000 vbv_delay: N/A
+  Stream #0:1: Audio: aac (LC), 48000 Hz, stereo, fltp, 128 kb/s
+    Metadata:
+      encoder         : Lavc60.31.102 aac
+[tee @ 0x55fdc6b8f540] Slave muxer #5 failed: Broken pipe, continuing with 5/6 slaves.
+Input #0, lavfi, from 'testsrc2=size=1280x720:rate=30,format=yuv420p':
+  Duration: N/A, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: wrapped_avframe, yuv420p, 1280x720 [SAR 1:1 DAR 16:9], 30 fps, 30 tbr, 30 tbn
+Input #1, lavfi, from 'sine=frequency=1000:sample_rate=48000':
+  Duration: N/A, start: 0.000000, bitrate: 768 kb/s
+  Stream #1:0: Audio: pcm_s16le, 48000 Hz, mono, s16, 768 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (wrapped_avframe (native) -> h264 (libx264))
+  Stream #1:0 -> #0:1 (pcm_s16le (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x5564501282c0] using SAR=1/1
+[libx264 @ 0x5564501282c0] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x5564501282c0] profile High, level 3.1, 4:2:0, 8-bit
+[libx264 @ 0x5564501282c0] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=1 ref=1 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=2 psy=1 psy_rd=1.00:0.00 mixed_ref=0 me_range=16 chroma_me=1 trellis=0 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=0 threads=11 lookahead_threads=11 sliced_threads=1 slices=11 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=0 weightp=1 keyint=30 keyint_min=16 scenecut=0 intra_refresh=0 rc_lookahead=0 rc=cbr mbtree=0 bitrate=4000 ratetol=1.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 vbv_maxrate=4000 vbv_bufsize=8000 nal_hrd=none filler=0 ip_ratio=1.40 aq=1:1.00
+Output #0, tee, to '[f=mpegts:mpegts_flags=+resend_headers+pat_pmt_at_frames]udp://127.0.0.1:10000?pkt_size=1316|[f=mpegts:mpegts_flags=+resend_headers+pat_pmt_at_frames]udp://127.0.0.1:10001?pkt_size=1316|[f=mpegts:mpegts_flags=+resend_headers+pat_pmt_at_frames]udp://127.0.0.1:10002?pkt_size=1316|[f=mpegts:mpegts_flags=+resend_headers+pat_pmt_at_frames]udp://127.0.0.1:10003?pkt_size=1316|[f=mpegts:mpegts_flags=+resend_headers+pat_pmt_at_frames]udp://127.0.0.1:10010?pkt_size=1316|[f=flv:flvflags=no_duration_filesize]rtmp://127.0.0.1:1935/obs':
+  Metadata:
+    encoder         : Lavf60.16.100
+  Stream #0:0: Video: h264, yuv420p(progressive), 1280x720 [SAR 1:1 DAR 16:9], q=2-31, 4000 kb/s, 30 fps, 30 tbn
+    Metadata:
+      encoder         : Lavc60.31.102 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 4000000/0/4000000 buffer size: 8000000 vbv_delay: N/A
+  Stream #0:1: Audio: aac (LC), 48000 Hz, stereo, fltp, 128 kb/s
+    Metadata:
+      encoder         : Lavc60.31.102 aac
