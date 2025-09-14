@@ -1,0 +1,16 @@
+[Unit]
+Description=Modem health checker (GW + WAN per modem)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/bin/bash -c 'while true; do /usr/local/bin/modem-health.sh || true; sleep 5; done'
+Restart=always
+RestartSec=2
+AmbientCapabilities=CAP_NET_RAW
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
