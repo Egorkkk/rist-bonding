@@ -7,3 +7,157 @@
 2025/09/10 23:11:48 INF [SRT] listener opened on :8890 (UDP)
 2025/09/10 23:11:48 INF [RTMP] [conn 127.0.0.1:43012] opened
 2025/09/10 23:11:48 INF [RTMP] [conn 127.0.0.1:43012] closed: unable to parse H264 config: invalid size 1
+2025/09/10 23:20:46 INF shutting down gracefully
+2025/09/10 23:20:46 INF [SRT] listener is closing
+2025/09/10 23:20:46 INF [WebRTC] listener is closing
+2025/09/10 23:20:46 INF [HLS] listener is closing
+2025/09/10 23:20:46 INF [RTMP] listener is closing
+2025/09/10 23:20:46 INF [RTSP] listener is closing
+2025/09/10 23:20:46 INF waiting for running hooks
+2025/09/10 23:20:46 INF MediaMTX v1.14.0
+2025/09/10 23:20:46 INF configuration loaded from /app/mediamtx.yml
+2025/09/10 23:20:46 INF [RTSP] listener opened on :8554 (TCP), :8000 (UDP/RTP), :8001 (UDP/RTCP)
+2025/09/10 23:20:46 INF [RTMP] listener opened on :1935
+2025/09/10 23:20:46 INF [HLS] listener opened on :8888
+2025/09/10 23:20:46 INF [WebRTC] listener opened on :8889 (HTTP), :8189 (ICE/UDP)
+2025/09/10 23:20:46 INF [SRT] listener opened on :8890 (UDP)
+2025/09/10 23:20:46 INF [RTMP] [conn 127.0.0.1:45914] opened
+2025/09/10 23:20:47 INF [RTMP] [conn 127.0.0.1:45914] closed: unable to parse H264 config: invalid size 1
+2025/09/10 23:25:05 INF shutting down gracefully
+2025/09/10 23:25:05 INF [SRT] listener is closing
+2025/09/10 23:25:05 INF [WebRTC] listener is closing
+2025/09/10 23:25:05 INF [HLS] listener is closing
+2025/09/10 23:25:05 INF [RTMP] listener is closing
+2025/09/10 23:25:05 INF [RTSP] listener is closing
+2025/09/10 23:25:05 INF waiting for running hooks
+2025/09/10 23:25:05 INF MediaMTX v1.14.0
+2025/09/10 23:25:05 INF configuration loaded from /app/mediamtx.yml
+2025/09/10 23:25:05 INF [RTSP] listener opened on :8554 (TCP), :8000 (UDP/RTP), :8001 (UDP/RTCP)
+2025/09/10 23:25:05 INF [RTMP] listener opened on :1935
+2025/09/10 23:25:05 INF [HLS] listener opened on :8888
+2025/09/10 23:25:05 INF [WebRTC] listener opened on :8889 (HTTP), :8189 (ICE/UDP)
+2025/09/10 23:25:05 INF [SRT] listener opened on :8890 (UDP)
+2025/09/10 23:25:05 INF [RTMP] [conn 127.0.0.1:39520] opened
+2025/09/10 23:25:07 INF [RTMP] [conn 127.0.0.1:39520] is publishing to path 'live/stream', 2 tracks (H264, MPEG-4 Audio)
+2025/09/10 23:26:24 INF shutting down gracefully
+2025/09/10 23:26:24 INF [SRT] listener is closing
+2025/09/10 23:26:24 INF [WebRTC] listener is closing
+2025/09/10 23:26:24 INF [HLS] listener is closing
+2025/09/10 23:26:24 INF [RTMP] listener is closing
+2025/09/10 23:26:24 INF [RTMP] [conn 127.0.0.1:39520] closed: terminated
+2025/09/10 23:26:24 INF [RTSP] listener is closing
+2025/09/10 23:26:24 INF waiting for running hooks
+2025/09/10 23:26:24 INF MediaMTX v1.14.0
+2025/09/10 23:26:24 INF configuration loaded from /app/mediamtx.yml
+2025/09/10 23:26:24 INF [RTSP] listener opened on :8554 (TCP), :8000 (UDP/RTP), :8001 (UDP/RTCP)
+2025/09/10 23:26:24 INF [RTMP] listener opened on :1935
+2025/09/10 23:26:24 INF [HLS] listener opened on :8888
+2025/09/10 23:26:24 INF [WebRTC] listener opened on :8889 (HTTP), :8189 (ICE/UDP)
+2025/09/10 23:26:24 INF [SRT] listener opened on :8890 (UDP)
+2025/09/10 23:26:24 INF [RTMP] [conn 127.0.0.1:60686] opened
+2025/09/10 23:26:26 INF [RTMP] [conn 127.0.0.1:60686] is publishing to path 'live/stream', 2 tracks (H264, MPEG-4 Audio)
+2025/09/10 23:29:33 INF shutting down gracefully
+2025/09/10 23:29:33 INF [SRT] listener is closing
+2025/09/10 23:29:33 INF [WebRTC] listener is closing
+2025/09/10 23:29:33 INF [HLS] listener is closing
+2025/09/10 23:29:33 INF [RTMP] listener is closing
+2025/09/10 23:29:33 INF [RTMP] [conn 127.0.0.1:60686] closed: terminated
+2025/09/10 23:29:33 INF [RTSP] listener is closing
+2025/09/10 23:29:33 INF waiting for running hooks
+2025/09/10 23:29:33 INF MediaMTX v1.14.0
+2025/09/10 23:29:33 INF configuration loaded from /app/mediamtx.yml
+2025/09/10 23:29:33 INF [RTSP] listener opened on :8554 (TCP), :8000 (UDP/RTP), :8001 (UDP/RTCP)
+2025/09/10 23:29:33 INF [RTMP] listener opened on :1935
+2025/09/10 23:29:33 INF [HLS] listener opened on :8888
+2025/09/10 23:29:33 INF [WebRTC] listener opened on :8889 (HTTP), :8189 (ICE/UDP)
+2025/09/10 23:29:33 INF [SRT] listener opened on :8890 (UDP)
+2025/09/10 23:29:34 INF [RTMP] [conn 127.0.0.1:46324] opened
+2025/09/10 23:29:35 INF [RTMP] [conn 127.0.0.1:46324] is publishing to path 'live/stream', 2 tracks (H264, MPEG-4 Audio)
+2025/09/10 23:32:38 INF shutting down gracefully
+2025/09/10 23:32:38 INF [SRT] listener is closing
+2025/09/10 23:32:38 INF [WebRTC] listener is closing
+2025/09/10 23:32:38 INF [HLS] listener is closing
+2025/09/10 23:32:38 INF [RTMP] listener is closing
+2025/09/10 23:32:38 INF [RTMP] [conn 127.0.0.1:46324] closed: terminated
+2025/09/10 23:32:38 INF [RTSP] listener is closing
+2025/09/10 23:32:38 INF waiting for running hooks
+2025/09/10 23:32:39 INF MediaMTX v1.14.0
+2025/09/10 23:32:39 INF configuration loaded from /app/mediamtx.yml
+2025/09/10 23:32:39 INF [RTSP] listener opened on :8554 (TCP), :8000 (UDP/RTP), :8001 (UDP/RTCP)
+2025/09/10 23:32:39 INF [RTMP] listener opened on :1935
+2025/09/10 23:32:39 INF [HLS] listener opened on :8888
+2025/09/10 23:32:39 INF [WebRTC] listener opened on :8889 (HTTP), :8189 (ICE/UDP)
+2025/09/10 23:32:39 INF [SRT] listener opened on :8890 (UDP)
+2025/09/10 23:32:39 INF [RTMP] [conn 127.0.0.1:51962] opened
+2025/09/10 23:32:40 INF [RTMP] [conn 127.0.0.1:51962] is publishing to path 'live/stream', 2 tracks (H264, MPEG-4 Audio)
+2025/09/10 23:37:58 INF shutting down gracefully
+2025/09/10 23:37:58 INF [SRT] listener is closing
+2025/09/10 23:37:58 INF [WebRTC] listener is closing
+2025/09/10 23:37:58 INF [HLS] listener is closing
+2025/09/10 23:37:58 INF [RTMP] listener is closing
+2025/09/10 23:37:58 INF [RTMP] [conn 127.0.0.1:51962] closed: terminated
+2025/09/10 23:37:58 INF [RTSP] listener is closing
+2025/09/10 23:37:58 INF waiting for running hooks
+2025/09/10 23:37:58 INF MediaMTX v1.14.0
+2025/09/10 23:37:58 INF configuration loaded from /app/mediamtx.yml
+2025/09/10 23:37:58 INF [RTSP] listener opened on :8554 (TCP), :8000 (UDP/RTP), :8001 (UDP/RTCP)
+2025/09/10 23:37:58 INF [RTMP] listener opened on :1935
+2025/09/10 23:37:58 INF [HLS] listener opened on :8888
+2025/09/10 23:37:58 INF [WebRTC] listener opened on :8889 (HTTP), :8189 (ICE/UDP)
+2025/09/10 23:37:58 INF [SRT] listener opened on :8890 (UDP)
+2025/09/10 23:37:58 INF [RTMP] [conn 127.0.0.1:41872] opened
+2025/09/10 23:38:00 INF [RTMP] [conn 127.0.0.1:41872] is publishing to path 'live/stream', 2 tracks (H264, MPEG-4 Audio)
+2025/09/10 23:38:56 INF shutting down gracefully
+2025/09/10 23:38:56 INF [SRT] listener is closing
+2025/09/10 23:38:56 INF [WebRTC] listener is closing
+2025/09/10 23:38:56 INF [HLS] listener is closing
+2025/09/10 23:38:56 INF [RTMP] listener is closing
+2025/09/10 23:38:56 INF [RTMP] [conn 127.0.0.1:41872] closed: terminated
+2025/09/10 23:38:56 INF [RTSP] listener is closing
+2025/09/10 23:38:56 INF waiting for running hooks
+2025/09/10 23:38:56 INF MediaMTX v1.14.0
+2025/09/10 23:38:56 INF configuration loaded from /app/mediamtx.yml
+2025/09/10 23:38:56 INF [RTSP] listener opened on :8554 (TCP), :8000 (UDP/RTP), :8001 (UDP/RTCP)
+2025/09/10 23:38:56 INF [RTMP] listener opened on :1935
+2025/09/10 23:38:56 INF [HLS] listener opened on :8888
+2025/09/10 23:38:56 INF [WebRTC] listener opened on :8889 (HTTP), :8189 (ICE/UDP)
+2025/09/10 23:38:56 INF [SRT] listener opened on :8890 (UDP)
+2025/09/10 23:38:56 INF [RTMP] [conn 127.0.0.1:37976] opened
+2025/09/10 23:38:58 INF [RTMP] [conn 127.0.0.1:37976] is publishing to path 'live/stream', 2 tracks (H264, MPEG-4 Audio)
+2025/09/10 23:39:50 INF shutting down gracefully
+2025/09/10 23:39:50 INF [SRT] listener is closing
+2025/09/10 23:39:50 INF [WebRTC] listener is closing
+2025/09/10 23:39:50 INF [HLS] listener is closing
+2025/09/10 23:39:50 INF [RTMP] listener is closing
+2025/09/10 23:39:50 INF [RTMP] [conn 127.0.0.1:37976] closed: terminated
+2025/09/10 23:39:50 INF [RTSP] listener is closing
+2025/09/10 23:39:50 INF waiting for running hooks
+2025/09/10 23:39:50 INF MediaMTX v1.14.0
+2025/09/10 23:39:50 INF configuration loaded from /app/mediamtx.yml
+2025/09/10 23:39:50 INF [RTSP] listener opened on :8554 (TCP), :8000 (UDP/RTP), :8001 (UDP/RTCP)
+2025/09/10 23:39:50 INF [RTMP] listener opened on :1935
+2025/09/10 23:39:50 INF [HLS] listener opened on :8888
+2025/09/10 23:39:50 INF [WebRTC] listener opened on :8889 (HTTP), :8189 (ICE/UDP)
+2025/09/10 23:39:50 INF [SRT] listener opened on :8890 (UDP)
+2025/09/10 23:39:50 INF [RTMP] [conn 127.0.0.1:38088] opened
+2025/09/10 23:39:51 INF [RTMP] [conn 127.0.0.1:38088] is publishing to path 'live/stream', 2 tracks (H264, MPEG-4 Audio)
+2025/09/10 23:40:54 INF shutting down gracefully
+2025/09/10 23:40:54 INF [SRT] listener is closing
+2025/09/10 23:40:54 INF [WebRTC] listener is closing
+2025/09/10 23:40:54 INF [HLS] listener is closing
+2025/09/10 23:40:54 INF [RTMP] listener is closing
+2025/09/10 23:40:54 INF [RTMP] [conn 127.0.0.1:38088] closed: terminated
+2025/09/10 23:40:54 INF [RTSP] listener is closing
+2025/09/10 23:40:54 INF waiting for running hooks
+2025/09/14 17:28:16 INF MediaMTX v1.14.0
+2025/09/14 17:28:16 INF configuration loaded from /app/mediamtx.yml
+2025/09/14 17:28:16 INF [RTSP] listener opened on :8554 (TCP), :8000 (UDP/RTP), :8001 (UDP/RTCP)
+2025/09/14 17:28:16 ERR listen tcp :1935: bind: address already in use
+2025/09/14 17:28:16 INF [RTSP] listener is closing
+2025/09/14 17:28:16 INF waiting for running hooks
+2025/09/14 17:31:22 INF MediaMTX v1.14.0
+2025/09/14 17:31:22 INF configuration loaded from /app/mediamtx.yml
+2025/09/14 17:31:22 INF [RTSP] listener opened on :8554 (TCP), :8000 (UDP/RTP), :8001 (UDP/RTCP)
+2025/09/14 17:31:22 ERR listen tcp :1935: bind: address already in use
+2025/09/14 17:31:22 INF [RTSP] listener is closing
+2025/09/14 17:31:22 INF waiting for running hooks

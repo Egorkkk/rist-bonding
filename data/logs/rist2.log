@@ -1,0 +1,725 @@
+1757871067.576649|0.0|[INFO] Starting ristsender version: 0.2.10 libRIST library: 0.2.10 API version: 4.4.0
+1757871067.576658|0.0|[INFO] Assigning stream-id 0 to this input
+1757871067.576665|0.0|[INFO] Starting in Main Profile Mode
+1757871067.576671|0.0|[INFO] RIST Sender Library 0.2.10
+1757871067.576676|0.0|[INFO] Link configured with maxrate=100000 bufmin=1000 bufmax=1000 reorder=15 rttmin=5 rttmax=500 congestion_control=1 min_retries=6 max_retries=20
+1757871067.576677|0.140716730765328|[INFO] Encryption is disabled for this peer
+1757871067.576844|0.140716730765328|[INFO] URL parsed successfully: Host 83.222.26.3, Port 8000
+1757871067.576854|0.140716730765328|[INFO] Starting in URL connect mode (3)
+1757871067.576865|0.140716730765328|[INFO] Configured the starting socket receive buffer size to 419430 Bytes.
+1757871067.576869|0.140716730765328|[INFO] Configured the starting socket send buffer size to 419430 Bytes.
+1757871067.576870|0.140716730765328|[INFO] Peer cname is m2
+1757871067.576873|0.140716730765328|[INFO] Setting max nacks per cycle to 88
+1757871067.576874|0.140716730765328|[INFO] Setting buffer size to 2000ms (Max buffer size + 2 * Max RTT)
+1757871067.576876|0.140716730765328|[INFO] Advertising flow_id  3797429642 and peer_id 1, 32768/1969
+1757871067.576877|0.140716730765328|[INFO] Initialized Sender Peer, connecting to receiver ...
+1757871067.576881|0.140716730765328|[INFO] Active Peer Information, IP:Port => 0.0.0.0:8000 (0), id: 1, ports: 32768->1969
+1757871067.576881|0.140716730765328|[INFO] Enabling keepalive for peer 1
+1757871067.577009|0.140716730765328|[INFO] Successfully Authenticated peer 1
+1757871067.577011|0.0|[INFO] URL parsed successfully: Host 127.0.0.1, Port 10002
+1757871067.577059|0.0|[INFO] Input socket is open and bound 127.0.0.1:10002
+1757871067.577205|0.140716730765328|[INFO] Starting master sender loop at 5 ms max jitter
+1757871067.582330|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":4,"received":0,"retransmitted":0,"bandwidth":0,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871068.581571|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":3819,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871069.579490|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4247,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871070.581221|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4365,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871071.580826|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4386,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871072.580786|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4387,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871073.582352|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4402,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871074.578924|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4406,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871075.578830|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4393,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871076.021104|0.0|[INFO] Starting ristsender version: 0.2.10 libRIST library: 0.2.10 API version: 4.4.0
+1757871076.021113|0.0|[INFO] Assigning stream-id 0 to this input
+1757871076.021120|0.0|[INFO] Starting in Main Profile Mode
+1757871076.021127|0.0|[INFO] RIST Sender Library 0.2.10
+1757871076.021149|0.0|[INFO] Link configured with maxrate=100000 bufmin=1000 bufmax=1000 reorder=15 rttmin=5 rttmax=500 congestion_control=1 min_retries=6 max_retries=20
+1757871076.021151|0.140352988827664|[INFO] Encryption is disabled for this peer
+1757871076.021325|0.140352988827664|[INFO] URL parsed successfully: Host 83.222.26.3, Port 8000
+1757871076.021333|0.140352988827664|[INFO] Starting in URL connect mode (3)
+1757871076.021340|0.140352988827664|[INFO] Configured the starting socket receive buffer size to 419430 Bytes.
+1757871076.021343|0.140352988827664|[INFO] Configured the starting socket send buffer size to 419430 Bytes.
+1757871076.021344|0.140352988827664|[INFO] Peer cname is m2
+1757871076.021346|0.140352988827664|[INFO] Setting max nacks per cycle to 88
+1757871076.021346|0.140352988827664|[INFO] Setting buffer size to 2000ms (Max buffer size + 2 * Max RTT)
+1757871076.021347|0.140352988827664|[INFO] Advertising flow_id  3798152850 and peer_id 1, 32768/1969
+1757871076.021348|0.140352988827664|[INFO] Initialized Sender Peer, connecting to receiver ...
+1757871076.021350|0.140352988827664|[INFO] Active Peer Information, IP:Port => 0.0.0.0:8000 (0), id: 1, ports: 32768->1969
+1757871076.021351|0.140352988827664|[INFO] Enabling keepalive for peer 1
+1757871076.021473|0.140352988827664|[INFO] Successfully Authenticated peer 1
+1757871076.021475|0.0|[INFO] URL parsed successfully: Host 127.0.0.1, Port 10002
+1757871076.021483|0.0|[INFO] Input socket is open and bound 127.0.0.1:10002
+1757871076.021568|0.140352988827664|[INFO] Starting master sender loop at 5 ms max jitter
+1757871076.026682|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":4,"received":0,"retransmitted":0,"bandwidth":0,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871076.580271|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4400,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871077.026607|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":3834,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871077.582181|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4402,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871078.022057|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4256,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871078.579556|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":3852,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871079.026074|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4376,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871079.579278|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4434,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871080.025656|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4404,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871080.579114|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871081.026299|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4407,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871081.579050|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4413,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871082.024417|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4402,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871082.577525|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871082.767514|0.0|[INFO] Starting ristsender version: 0.2.10 libRIST library: 0.2.10 API version: 4.4.0
+1757871082.767525|0.0|[INFO] Assigning stream-id 0 to this input
+1757871082.767534|0.0|[INFO] Starting in Main Profile Mode
+1757871082.767542|0.0|[INFO] RIST Sender Library 0.2.10
+1757871082.767547|0.0|[INFO] Link configured with maxrate=100000 bufmin=1000 bufmax=1000 reorder=15 rttmin=5 rttmax=500 congestion_control=1 min_retries=6 max_retries=20
+1757871082.767549|0.140512247013392|[INFO] Encryption is disabled for this peer
+1757871082.767734|0.140512247013392|[INFO] URL parsed successfully: Host 83.222.26.3, Port 8000
+1757871082.767744|0.140512247013392|[INFO] Starting in URL connect mode (3)
+1757871082.767750|0.140512247013392|[INFO] Configured the starting socket receive buffer size to 419430 Bytes.
+1757871082.767754|0.140512247013392|[INFO] Configured the starting socket send buffer size to 419430 Bytes.
+1757871082.767754|0.140512247013392|[INFO] Peer cname is m2
+1757871082.767756|0.140512247013392|[INFO] Setting max nacks per cycle to 88
+1757871082.767757|0.140512247013392|[INFO] Setting buffer size to 2000ms (Max buffer size + 2 * Max RTT)
+1757871082.767758|0.140512247013392|[INFO] Advertising flow_id  4204481560 and peer_id 1, 32768/1969
+1757871082.767759|0.140512247013392|[INFO] Initialized Sender Peer, connecting to receiver ...
+1757871082.767760|0.140512247013392|[INFO] Active Peer Information, IP:Port => 0.0.0.0:8000 (0), id: 1, ports: 32768->1969
+1757871082.767761|0.140512247013392|[INFO] Enabling keepalive for peer 1
+1757871082.767912|0.140512247013392|[INFO] Successfully Authenticated peer 1
+1757871082.767914|0.0|[INFO] URL parsed successfully: Host 127.0.0.1, Port 10002
+1757871082.767931|0.0|[INFO] Input socket is open and bound 127.0.0.1:10002
+1757871082.768025|0.140512247013392|[INFO] Starting master sender loop at 5 ms max jitter
+1757871082.773115|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":4,"received":0,"retransmitted":0,"bandwidth":0,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871083.023172|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4413,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871083.580776|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4420,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871083.771924|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":3840,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871084.026326|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4420,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871084.579469|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871084.772222|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4261,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871085.024776|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871085.578918|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":3864,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871085.770221|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4378,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871086.023610|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871086.577773|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4441,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871086.769942|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4405,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871087.022466|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871087.581875|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4423,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871087.768897|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4413,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871088.021844|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871088.580766|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871088.768700|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4414,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871089.026196|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871089.579266|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871089.771810|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":3866,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871090.025643|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871090.577794|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871090.771933|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4437,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871091.023382|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4403,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871091.581996|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871091.771494|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4420,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871092.022433|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4413,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871092.580448|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871092.769967|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871093.021805|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4414,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871093.578528|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871093.768590|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871094.024914|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871094.581949|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4420,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871094.772577|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871095.023545|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871095.577688|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4413,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871095.770756|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4420,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871096.026479|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4421,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871096.577349|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4413,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871096.769866|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":3865,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871097.026448|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4415,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871097.580856|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871097.769098|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4440,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871098.025830|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871098.580499|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871098.768525|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4420,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871099.025711|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4413,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871099.579474|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871099.772655|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871100.025042|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4415,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871100.578753|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871100.771347|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871101.023856|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871101.577351|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871101.769466|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4420,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871102.022984|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871102.581163|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871102.772161|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4422,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871103.022297|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4415,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871103.581534|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4414,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871103.772025|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871104.025591|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871104.581531|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4413,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871104.771787|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871105.023966|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871105.580926|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4413,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871105.770872|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4414,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871106.023163|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871106.580581|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4413,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871106.769944|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4415,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871107.026246|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4420,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871107.579730|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4415,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871107.772838|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4420,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871108.025516|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871108.578864|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4415,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871108.772220|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871109.025356|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4415,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871109.582141|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871109.771654|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4415,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871110.024202|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871110.580711|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871110.769961|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871111.022210|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871111.580067|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871111.768388|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4420,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871112.025601|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4420,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871112.579119|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871112.772171|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871113.024305|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871113.578296|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871113.772103|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871114.023340|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871114.577796|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4413,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871114.771644|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4413,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871115.026496|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4420,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871115.581829|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871115.770769|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871116.025928|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871116.580166|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871116.770323|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4414,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871117.024407|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871117.578924|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871117.769392|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871118.023812|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":3863,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871118.577339|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871118.769648|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4413,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871119.021945|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4443,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871119.580825|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4420,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871119.770766|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4408,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871120.025603|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4425,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871120.580183|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871120.769905|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4413,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871121.024577|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871121.578891|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871121.768409|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871122.023332|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871122.578127|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871122.771756|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4420,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871123.022689|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871123.577469|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871123.770692|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871124.022170|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871124.581947|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4415,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871124.769898|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871125.026646|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4415,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871125.580786|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871125.768584|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871126.025158|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871126.579889|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871126.772163|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871127.023225|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4420,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871127.579993|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4413,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871127.771164|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871128.021904|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871128.579205|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4415,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871128.770125|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871129.026280|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4415,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871129.577762|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871129.768695|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871130.025192|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871130.580788|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4421,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871130.772882|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871131.024772|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4414,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871131.578940|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4420,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871131.771218|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871132.022660|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4421,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871132.577867|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871132.770016|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871133.022012|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4420,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871133.577443|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871133.769410|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871134.021719|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4415,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871134.577526|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4412,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871134.769113|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4414,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871135.024908|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871135.581284|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":3864,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871135.768790|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4413,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871136.023984|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871136.581509|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4435,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871136.772027|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871137.022682|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871137.579608|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4424,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871137.770284|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4420,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871138.025956|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4420,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871138.577891|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4422,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871138.769799|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871139.024573|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871139.581244|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4420,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871139.768666|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871140.023866|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871140.580341|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871140.772647|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871141.022831|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871141.578983|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871141.770793|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871142.022061|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871142.578576|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":3864,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871142.769852|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871143.025558|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871143.577421|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4441,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871143.768098|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871144.023535|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4420,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871144.581465|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4424,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871144.771229|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4421,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871145.021652|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4420,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871145.580504|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871145.770172|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871146.026039|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871146.579905|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4414,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871146.768463|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":3868,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871147.025310|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":3864,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871147.578549|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871147.768407|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4439,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871148.024130|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4440,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871148.578401|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4413,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871148.771825|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4423,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871149.025018|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871149.578817|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":3859,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871149.769918|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4422,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871150.024219|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871150.581948|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4442,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871150.769462|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871151.023843|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871151.580375|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4425,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871151.769832|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4412,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871152.023055|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871152.579414|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871152.770027|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4411,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871153.026064|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4421,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871153.578253|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871153.769064|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":3863,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871154.024401|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":3868,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871154.581733|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871154.768393|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4439,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871155.023553|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4441,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871155.581606|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4414,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871155.769077|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871156.026614|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4426,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871156.580146|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871156.769230|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4413,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871157.024875|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4422,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871157.579223|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871157.769574|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4411,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871158.023272|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4420,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871158.577971|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871158.769165|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4413,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871159.022752|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871159.577571|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871159.772662|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871160.022075|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4415,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871160.581368|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871160.771060|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":3866,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871161.026687|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4415,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871161.581229|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4415,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871161.772161|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4434,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871162.026171|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871162.580095|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871162.771126|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4422,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871163.024939|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871163.578771|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871163.769676|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4421,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871164.023759|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871164.578222|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871164.772919|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871165.022969|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871165.581952|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871165.770964|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4421,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871166.021689|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871166.580082|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4420,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871166.770290|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871167.026029|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4415,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871167.578880|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871167.771305|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":3858,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871168.021944|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":3856,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871168.582168|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871168.769077|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4442,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871169.025943|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4438,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871169.580529|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871169.768524|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4423,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871170.024942|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4423,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871170.579228|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871170.768130|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871171.024165|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871171.577546|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4422,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871171.771482|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871172.022726|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871172.577282|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871172.770834|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871173.022241|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871173.581519|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871173.770354|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4415,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871174.026030|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871174.580092|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871174.768731|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":3865,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871175.025205|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871175.579329|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871175.773009|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4439,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871176.024700|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871176.578546|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4415,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871176.772125|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4423,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871177.023147|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871177.577734|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871177.771468|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871178.023340|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4413,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871178.581894|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":3864,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871178.771225|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4414,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871179.023676|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4412,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871179.581165|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4441,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871179.769910|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871180.022449|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871180.579393|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4424,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871180.768459|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871181.023443|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4411,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871181.578541|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4418,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871181.772209|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871182.022394|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":3864,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871182.578029|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4415,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871182.770747|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":9,"received":0,"retransmitted":0,"bandwidth":4419,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871183.022672|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4436,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871183.582049|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4416,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871183.769882|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871184.026426|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4423,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871184.580657|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3797429642,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871184.768770|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":4204481560,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4417,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+
+1757871185.024668|0.0|[INFO] {"sender-stats":{"peer":{"flow_id":3798152850,"id":1,"cname":"","type":"data","stats":{"quality":100,"sent":10,"received":0,"retransmitted":0,"bandwidth":4422,"retry_bandwidth":0,"bandwidth_skipped":0,"bloat_skipped":0,"retransmit_skipped":0,"rtt":0,"avg_rtt":5,"retry_buffer_size":1,"cooldown_time":0}}}}
+

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import logging
 from logging.handlers import RotatingFileHandler
-import os, sys, yaml, signal, threading, time, subprocess, shlex
+import os, sys, yaml, signal, threading, subprocess, shlex
 from http import HTTPStatus
 from flask import Flask, request, Response, redirect, url_for, jsonify, send_file
 
@@ -100,6 +100,19 @@ def drop_priv(uid, gid):
         signal.signal(signal.SIGTERM, signal.SIG_DFL)
     return _preexec
 
+# -----------------------------
+# FFMPEG PIPELINE (FIXED tee/RTMP), без BSF для TS
+# -----------------------------
+
+def _ts_sink(url: str, vbit_kbps: int) -> str:
+    """
+    Возвращает описание sink для tee с mpegts. Без BSF — libx264 по умолчанию выдаёт AnnexB для TS,
+    а +resend_headers обеспечит присутствие SPS/PPS в потоке.
+    pkt_size переносим в сам udp URL, чтобы он применялся per-sink.
+    """
+    flags = "mpegts_flags=+resend_headers+pat_pmt_at_frames"
+    return f"[f=mpegts:{flags}]{url}?pkt_size=1316"
+
 def build_ffmpeg_cmd(cfg):
     v = cfg.get("video", {})
     a = cfg.get("audio", {})
@@ -113,22 +126,20 @@ def build_ffmpeg_cmd(cfg):
     preset = v.get("preset", "veryfast")
 
     # 4 локальных UDP-выхода для ristsender + мониторный порт
-    udp_targets = [
-        "[f=mpegts]udp://127.0.0.1:10000",
-        "[f=mpegts]udp://127.0.0.1:10001",
-        "[f=mpegts]udp://127.0.0.1:10002",
-        "[f=mpegts]udp://127.0.0.1:10003",
-        # мониторный порт, чтобы смотреть ffprobe, не мешая ristsender
-        "[f=mpegts]udp://127.0.0.1:10010"
-    ]
-    outputs = udp_targets[:]
+    ts_ports = [10000, 10001, 10002, 10003, 10010]
+    ts_outputs = [_ts_sink(f"udp://127.0.0.1:{p}", vbit) for p in ts_ports]
+
+    outputs = list(ts_outputs)
 
     publish_rtmp = med.get("publish_rtmp_copy", True)
     rtmp_url = med.get("publish_rtmp_url", "rtmp://127.0.0.1/live/stream")
     if publish_rtmp:
-        outputs.append(f"[f=flv]{rtmp_url}")
+        # Для RTMP/FLV — без annexb. Если доступен h264_metadata — можно вставить AUD для совместимости.
+        rtmp_seg = "[f=flv:flvflags=no_duration_filesize]" + rtmp_url
+        outputs.append(rtmp_seg)
 
-    tee_arg = "tee:" + "|".join(outputs)
+    # ВАЖНО: когда используем -f tee, НЕ пишем префикс 'tee:' в самой строке.
+    tee_arg = "|".join(outputs)
 
     # Источник
     src = str(ingest.get("source", "test")).lower()
@@ -140,30 +151,31 @@ def build_ffmpeg_cmd(cfg):
     elif src == "uvc":
         src_args = f"-f v4l2 -framerate {fps} -video_size {size} -i {ingest.get('uvc_device', '/dev/video0')}"
         if a.get("enable", False):
-            # здесь можно подключить ALSA, если нужно
             pass
     elif src == "rtmp_pull":
         src_args = f"-i {shlex.quote(ingest.get('rtmp_pull_url','rtmp://127.0.0.1/live/stream'))}"
     else:
         raise RuntimeError(f"Unknown ingest.source: {src}")
 
-    # Кодирование
+    # Аудио
     abitr = int(a.get("bitrate_kbps",128))
     asr = int(a.get("sample_rate",48000))
     acodec = "-an"
     if a.get("enable", True):
         acodec = f"-c:a aac -b:a {abitr}k -ar {asr} -ac 2"
 
+    # Видео кодирование
+    # x264-params: отключим scenecut/open_gop для стабильного GOP и корректных SPS/PPS
+    # +global_header для лучшей совместимости с контейнерами, где нужны заголовки в extradata
     enc = (
         f"-c:v libx264 -preset {preset} -tune zerolatency "
-        f"-g {gop} -keyint_min {gop} -b:v {vbit}k -maxrate {vbit}k -bufsize {vbit*2}k "
-        f"-pix_fmt yuv420p {acodec}"
+        f"-g {gop} -keyint_min {gop} -x264-params 'scenecut=0:open_gop=0' -flags +global_header "
+        f"-b:v {vbit}k -maxrate {vbit}k -bufsize {vbit*2}k -pix_fmt yuv420p {acodec}"
     )
 
-    # Дружелюбный для приёмников TS
+    # TS-дружественные глобальные опции
     ts_opts = (
-        f"-flush_packets 1 -pkt_size 1316 -muxrate {vbit + 1000}k "
-        f"-mpegts_flags +initial_discontinuity+resend_headers+pat_pmt_at_frames "
+        f"-flush_packets 1 "
         f"-muxdelay 0 -muxpreload 0"
     )
 
@@ -172,6 +184,10 @@ def build_ffmpeg_cmd(cfg):
         cmd += " -map 1:a:0"
     cmd += f" {enc} {ts_opts} -f tee \"{tee_arg}\""
     return cmd
+
+# -----------------------------
+# RIST
+# -----------------------------
 
 def build_rist_cmds(cfg):
     r = cfg.get("rist", {})
@@ -209,6 +225,10 @@ def build_rist_cmds(cfg):
         cmd = f"ristsender -i udp://127.0.0.1:{inport} -o {outurl}"
         cmds.append((cmd, s.get("uid", 0), s.get("gid", 0), f"rist{idx}", True, idx))
     return cmds
+
+# -----------------------------
+# LIFECYCLE
+# -----------------------------
 
 def start_all():
     with lock:
@@ -306,6 +326,10 @@ def stop_sender(idx):
         logger.info(f"[RIST/STOP] idx={idx}")
         return True, "stopped"
 
+# -----------------------------
+# HTTP UI
+# -----------------------------
+
 @app.route("/", methods=["GET"])
 def index():
     cfg_text = ""
@@ -332,24 +356,24 @@ def index():
           <td>{'on' if enabled else 'off'}</td>
           <td>{status}</td>
           <td>
-            <form method="POST" action="/toggle" style="display:inline">
-              <input type="hidden" name="sender" value="{i}">
-              <input type="hidden" name="action" value="{'disable' if enabled else 'enable'}">
-              <button type="submit">{btn_label}</button>
+            <form method=\"POST\" action=\"/toggle\" style=\"display:inline\">
+              <input type=\"hidden\" name=\"sender\" value=\"{i}\">
+              <input type=\"hidden\" name=\"action\" value=\"{'disable' if enabled else 'enable'}\">
+              <button type=\"submit\">{btn_label}</button>
             </form>
           </td>
           <td>
-            <form method="POST" action="/set_weight" style="display:inline">
-              <input type="hidden" name="sender" value="{i}">
-              <input type="number" min="0" max="1000" name="weight" value="{weight}">
-              <button type="submit">Применить</button>
+            <form method=\"POST\" action=\"/set_weight\" style=\"display:inline\">
+              <input type=\"hidden\" name=\"sender\" value=\"{i}\">
+              <input type=\"number\" min=\"0\" max=\"1000\" name=\"weight\" value=\"{weight}\">
+              <button type=\"submit\">Применить</button>
             </form>
           </td>
-          <td><a href="/logs/rist{i}">log</a></td>
+          <td><a href=\"/logs/rist{i}\">log</a></td>
         </tr>
         """
     html = f"""
-    <html><head><meta charset="utf-8"><title>RIST Bonding</title>
+    <html><head><meta charset=\"utf-8\"><title>RIST Bonding</title>
     <style>
       body {{ font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; max-width: 1100px; margin: 20px auto; }}
       textarea {{ width: 100%; height: 50vh; }}
@@ -362,9 +386,9 @@ def index():
     </style></head><body>
     <h2>Processes</h2>
     <ul>
-      <li><a href="/logs/entrypoint">entrypoint.log</a></li>
-      <li><a href="/logs/ffmpeg">ffmpeg.log</a></li>
-      <li><a href="/logs/mediamtx">mediamtx.log</a></li>
+      <li><a href=\"/logs/entrypoint\">entrypoint.log</a></li>
+      <li><a href=\"/logs/ffmpeg\">ffmpeg.log</a></li>
+      <li><a href=\"/logs/mediamtx\">mediamtx.log</a></li>
     </ul>
 
     <h2>RIST senders</h2>
@@ -378,14 +402,14 @@ def index():
     </table>
 
     <h2>Raw config editor</h2>
-    <form method="POST" action="/save">
-      <textarea name="cfg">{cfg_text}</textarea>
-      <div class="row">
-        <button type="submit">Сохранить и перезапустить всё</button>
-        <a href="/status">Статус (JSON)</a>
+    <form method=\"POST\" action=\"/save\">
+      <textarea name=\"cfg\">{cfg_text}</textarea>
+      <div class=\"row\">
+        <button type=\"submit\">Сохранить и перезапустить всё</button>
+        <a href=\"/status\">Статус (JSON)</a>
       </div>
     </form>
-    <p class="hint">Файл: {CONFIG_PATH}</p>
+    <p class=\"hint\">Файл: {CONFIG_PATH}</p>
     </body></html>"""
     return Response(html, mimetype="text/html")
 
@@ -514,9 +538,17 @@ def logs(name):
     except Exception as e:
         return Response(f"read error: {e}", status=500)
 
+# -----------------------------
+# SIGNALS
+# -----------------------------
+
 def sigterm(_sig, _frm):
     stop_all()
     sys.exit(0)
+
+# -----------------------------
+# MAIN
+# -----------------------------
 
 def main():
     signal.signal(signal.SIGTERM, sigterm)
