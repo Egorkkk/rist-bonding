@@ -328,16 +328,24 @@ def build_ffmpeg_cmd(cfg):
 # -----------------------------
 
 def build_rist_cmds(cfg):
-    r = cfg.get("rist", {})
+    r = cfg.get("rist", {}) or {}
     ip = r.get("remote_ip")
     port = int(r.get("port", 8230))
     prof = r.get("profile", "main")
     buf = int(r.get("buffer_ms", 100))
     bw = int(r.get("bandwidth_kbps", 8000))
-    enc = r.get("encryption", {})
+    enc = r.get("encryption", {}) or {}
     use_enc = enc.get("enabled", True)
     etype = int(enc.get("type", 128))
     secret = enc.get("secret", "changeme")
+
+    # НОВОЕ: одинаковый stream-id для всех sender'ов
+    # приоритет: rist.stream_id → stream.name → "obs"
+    stream_section = (cfg.get("stream", {}) or {})
+    stream_id = (r.get("stream_id")
+                 or stream_section.get("name")
+                 or "obs")
+    stream_id = str(stream_id).strip()
 
     cmds = []
     for idx, s in enumerate(r.get("senders", [])):
@@ -354,7 +362,8 @@ def build_rist_cmds(cfg):
             f"profile={prof}",
             f"buffer={buf}",
             f"bandwidth={bw}",
-            f"weight={weight}"
+            f"weight={weight}",
+            f"stream-id={stream_id}",   # ← ключевая строка
         ]
         if use_enc and etype in (128, 256):
             params += [f"encryption-type={etype}", f"secret={secret}"]

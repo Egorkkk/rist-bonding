@@ -1,9 +1,12 @@
+stream:
+  name: obs         # будет использовано как stream-id, если явно не задан rist.stream_id
 rist:
   remote_ip: 83.222.26.3
   port: 8000
   profile: main
   buffer_ms: 1000
   bandwidth_kbps: 8000
+  stream_id: obs    # можно явно, чтобы не зависеть от stream.name
   encryption:
     enabled: false
     type: 128

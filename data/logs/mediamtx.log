@@ -511,3 +511,40 @@
 2025/09/14 20:23:33 INF [RTMP] [conn 127.0.0.1:56386] is publishing to path 'obs', 2 tracks (H264, MPEG-4 Audio)
 2025/09/14 20:24:22 INF [HLS] [muxer obs] created (requested by 127.0.0.1:56798)
 2025/09/14 20:24:22 INF [HLS] [muxer obs] is converting into HLS, 2 tracks (H264, MPEG-4 Audio)
+2025/09/14 20:40:15 INF [HLS] [muxer obs] destroyed: not used anymore
+2025/09/14 20:45:02 INF shutting down gracefully
+2025/09/14 20:45:02 INF [SRT] listener is closing
+2025/09/14 20:45:02 INF [WebRTC] listener is closing
+2025/09/14 20:45:02 INF [HLS] listener is closing
+2025/09/14 20:45:02 INF [RTMP] listener is closing
+2025/09/14 20:45:02 INF [RTMP] [conn 127.0.0.1:56386] closed: terminated
+2025/09/14 20:45:02 INF [RTSP] listener is closing
+2025/09/14 20:45:02 INF waiting for running hooks
+2025/09/14 20:45:02 INF MediaMTX v1.14.0
+2025/09/14 20:45:02 INF configuration loaded from /app/mediamtx.yml
+2025/09/14 20:45:02 INF [RTSP] listener opened on :8554 (TCP), :8000 (UDP/RTP), :8001 (UDP/RTCP)
+2025/09/14 20:45:02 INF [RTMP] listener opened on :1935
+2025/09/14 20:45:02 INF [HLS] listener opened on :8888
+2025/09/14 20:45:02 INF [WebRTC] listener opened on :8889 (HTTP), :8189 (ICE/UDP)
+2025/09/14 20:45:02 INF [SRT] listener opened on :8890 (UDP)
+2025/09/14 20:45:02 INF [RTMP] [conn 127.0.0.1:41034] opened
+2025/09/14 20:45:04 INF [RTMP] [conn 127.0.0.1:41034] is publishing to path 'obs', 2 tracks (H264, MPEG-4 Audio)
+2025/09/14 20:45:44 INF shutting down gracefully
+2025/09/14 20:45:44 INF [SRT] listener is closing
+2025/09/14 20:45:44 INF [WebRTC] listener is closing
+2025/09/14 20:45:44 INF [HLS] listener is closing
+2025/09/14 20:45:44 INF [RTMP] listener is closing
+2025/09/14 20:45:44 INF [RTMP] [conn 127.0.0.1:41034] closed: terminated
+2025/09/14 20:45:44 INF [RTSP] listener is closing
+2025/09/14 20:45:44 INF waiting for running hooks
+2025/09/14 20:45:44 INF MediaMTX v1.14.0
+2025/09/14 20:45:44 INF configuration loaded from /app/mediamtx.yml
+2025/09/14 20:45:44 INF [RTSP] listener opened on :8554 (TCP), :8000 (UDP/RTP), :8001 (UDP/RTCP)
+2025/09/14 20:45:44 INF [RTMP] listener opened on :1935
+2025/09/14 20:45:44 INF [HLS] listener opened on :8888
+2025/09/14 20:45:44 INF [WebRTC] listener opened on :8889 (HTTP), :8189 (ICE/UDP)
+2025/09/14 20:45:44 INF [SRT] listener opened on :8890 (UDP)
+2025/09/14 20:45:44 INF [RTMP] [conn 127.0.0.1:38002] opened
+2025/09/14 20:45:46 INF [RTMP] [conn 127.0.0.1:38002] is publishing to path 'obs', 2 tracks (H264, MPEG-4 Audio)
+2025/09/14 20:45:51 INF [HLS] [muxer obs] created (requested by 192.168.0.192:64441)
+2025/09/14 20:45:51 INF [HLS] [muxer obs] is converting into HLS, 2 tracks (MPEG-4 Audio, H264)
