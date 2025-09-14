@@ -44,7 +44,7 @@ rist:
 ingest:
   source: test
   uvc_device: /dev/video0
-  rtmp_pull_url: rtmp://127.0.0.1/live/stream
+  rtmp_pull_url: rtmp://127.0.0.1/obs/stream
 video:
   size: 1280x720
   fps: 30
@@ -59,6 +59,42 @@ mediamtx:
   enable: true
   rtmp_listen: :1935
   publish_rtmp_copy: true
-  publish_rtmp_url: rtmp://127.0.0.1/live/stream
+  publish_rtmp_url: rtmp://127.0.0.1/obs/stream
 ui:
   listen: 0.0.0.0:8081
+ffmpeg:
+  ingest:
+    source: test          # test | uvc | rtmp_pull
+    size: 1280x720
+    fps: 30
+    ffmpeg.video.insert_aud: false
+    uvc_device: /dev/video0
+    rtmp_pull_url: rtmp://127.0.0.1/obs/stream
+
+  video:
+    codec: libx264
+    preset: veryfast
+    tune: zerolatency
+    pix_fmt: yuv420p
+    bitrate_kbps: 4000
+    maxrate_kbps: 4000     # по умолчанию = bitrate_kbps
+    bufsize_kbps: 8000     # по умолчанию = 2 * bitrate_kbps
+    fps: 30                # по умолчанию из ingest.fps
+    gop: 30                # по умолчанию = fps * 2
+    force_keyint_sec: 1    # принудительный IDR каждые 1с
+    insert_aud: true       # добавить AUD в поток (улучшает ловлю декодерами)
+    x264_params: "scenecut=0:open_gop=0:repeat-headers=1"
+
+  audio:
+    enable: true
+    codec: aac
+    bitrate_kbps: 128
+    sample_rate: 48000
+    channels: 2
+
+  tee:
+    udp_ports: [10000, 10001, 10002, 10003, 10010]
+    mpegts_flags: "+resend_headers+pat_pmt_at_frames"   # можно и полной формой: "mpegts_flags=+resend_headers+pat_pmt_at_frames"
+    pkt_size: 1316
+    publish_rtmp_copy: true
+    publish_rtmp_url: "rtmp://127.0.0.1:1935/obs"

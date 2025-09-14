@@ -3,6 +3,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 import os, sys, yaml, signal, threading, subprocess, shlex
 from http import HTTPStatus
+from urllib.parse import urlparse
 from flask import Flask, request, Response, redirect, url_for, jsonify, send_file
 
 CONFIG_PATH = os.getenv("CONFIG_PATH", "/data/config.yml")
@@ -101,89 +102,226 @@ def drop_priv(uid, gid):
     return _preexec
 
 # -----------------------------
-# FFMPEG PIPELINE (FIXED tee/RTMP), без BSF для TS
+# Helper: resolve preview HLS URL
 # -----------------------------
 
-def _ts_sink(url: str, vbit_kbps: int) -> str:
+def resolve_preview_url(cfg, request_host: str) -> str:
     """
-    Возвращает описание sink для tee с mpegts. Без BSF — libx264 по умолчанию выдаёт AnnexB для TS,
-    а +resend_headers обеспечит присутствие SPS/PPS в потоке.
-    pkt_size переносим в сам udp URL, чтобы он применялся per-sink.
+    Возвращает HLS URL для встраиваемого плеера.
+    Приоритеты:
+      1) cfg['preview_url'] — готовый URL
+      2) http://{public_host}:{http_port}/{stream_name}/index.m3u8
+      3) http://{request_host}:{8888}/{obs}/index.m3u8
     """
-    flags = "mpegts_flags=+resend_headers+pat_pmt_at_frames"
-    return f"[f=mpegts:{flags}]{url}?pkt_size=1316"
+    url = (cfg.get("preview_url") or "").strip()
+    if url:
+        return url
 
+    med = cfg.get("mediamtx", {}) or {}
+    stream = cfg.get("stream", {}) or {}
+
+    host = (med.get("public_host") or "").strip()
+    port = int(med.get("http_port", 8888))
+    name = (stream.get("name") or "obs").strip()
+
+    if not host:
+        try:
+            host = urlparse("http://" + request_host).hostname or "localhost"
+        except Exception:
+            host = "localhost"
+
+    return f"http://{host}:{port}/{name}/index.m3u8"
+
+# -----------------------------
+# FFMPEG PIPELINE (FIXED tee/RTMP), без BSF для TS
+# -----------------------------
+def _ts_sink(url: str, vbit_kbps: int, cfg=None) -> str:
+    """
+    Возвращает описание sink для tee с mpegts.
+    Настраивается через config.yml → ffmpeg.tee.{mpegts_flags,pkt_size} (оба поля опциональны).
+    Гарантируем форму ключа: "mpegts_flags=..." даже если в конфиге записано "+resend_headers...".
+    """
+    ff_tee = ((cfg or {}).get("ffmpeg", {}) or {}).get("tee", {})
+    raw_flags = str(ff_tee.get("mpegts_flags", "+resend_headers+pat_pmt_at_frames"))
+    flags = raw_flags if raw_flags.strip().startswith("mpegts_flags=") else f"mpegts_flags={raw_flags}"
+    pkt = int(ff_tee.get("pkt_size", 1316))
+    return f"[f=mpegts:{flags}]{url}?pkt_size={pkt}"
+    
 def build_ffmpeg_cmd(cfg):
-    v = cfg.get("video", {})
-    a = cfg.get("audio", {})
-    ingest = cfg.get("ingest", {})
-    med = cfg.get("mediamtx", {})
+    """
+    Собирает команду ffmpeg на основе config.yml.
+    Новая схема настроек (все поля опциональны, есть бэкофы к старым ключам):
 
-    size = v.get("size", "1280x720")
-    fps = int(v.get("fps", 30))
+    ffmpeg:
+      ingest:
+        source: test|uvc|rtmp_pull
+        size: 1280x720
+        fps: 30
+        uvc_device: /dev/video0
+        rtmp_pull_url: rtmp://127.0.0.1/live/stream
+      video:
+        codec: libx264
+        preset: veryfast
+        tune: zerolatency
+        pix_fmt: yuv420p
+        bitrate_kbps: 4000
+        maxrate_kbps: null   # если не задано -> = bitrate_kbps
+        bufsize_kbps: null   # если не задано -> = 2*bitrate_kbps
+        fps: 30              # если не задано -> из ingest.fps
+        gop: null            # если не задано -> fps*2
+        x264_params: "scenecut=0:open_gop=0:repeat-headers=1"
+        force_keyint_sec: 1
+        insert_aud: true
+      audio:
+        enable: true
+        codec: aac
+        bitrate_kbps: 128
+        sample_rate: 48000
+        channels: 2
+      tee:
+        udp_ports: [10000,10001,10002,10003,10010]
+        mpegts_flags: "+resend_headers+pat_pmt_at_frames"
+        pkt_size: 1316
+        publish_rtmp_copy: true
+        publish_rtmp_url: "rtmp://127.0.0.1/live/stream"
+
+    Также поддерживаются старые поля верхнего уровня: video, audio, ingest, mediamtx.{publish_rtmp_*}.
+    """
+    import shlex
+
+    # секции с бэкофами на старые ключи
+    ff = cfg.get("ffmpeg", {}) or {}
+
+    # Ingest
+    ingest_cfg = ff.get("ingest", {}) or cfg.get("ingest", {}) or {}
+    src = str(ingest_cfg.get("source", "test")).lower()
+    size = ingest_cfg.get("size") or (cfg.get("video", {}) or {}).get("size") or "1280x720"
+    fps  = int(ingest_cfg.get("fps") or (cfg.get("video", {}) or {}).get("fps", 30))
+    uvc_dev = ingest_cfg.get("uvc_device", "/dev/video0")
+    rtmp_pull_url = ingest_cfg.get("rtmp_pull_url", "rtmp://127.0.0.1/live/stream")
+
+    # Video
+    vdef = {
+        "codec": "libx264",
+        "preset": "veryfast",
+        "tune": "zerolatency",
+        "pix_fmt": "yuv420p",
+        "bitrate_kbps": 4000,
+        "maxrate_kbps": None,
+        "bufsize_kbps": None,
+        "fps": fps,
+        "gop": None,
+        "x264_params": "scenecut=0:open_gop=0:repeat-headers=1",
+        "force_keyint_sec": 1,
+        "insert_aud": True,
+    }
+    # слияние с ffmpeg.video и поддержка старого video
+    v = {**vdef, **(cfg.get("video", {}) or {}), **(ff.get("video", {}) or {})}
     vbit = int(v.get("bitrate_kbps", 4000))
-    gop = int(v.get("gop", fps*2))
-    preset = v.get("preset", "veryfast")
+    vmax = int(v.get("maxrate_kbps", vbit))
+    vbuf = int(v.get("bufsize_kbps", 2*vbit))
+    vfps = int(v.get("fps", fps))
+    gop = int(v.get("gop", vfps*2))
+    force_keyint_sec = int(v.get("force_keyint_sec", 1))
+
+    # Audio
+    adef = {"enable": True, "codec": "aac", "bitrate_kbps": 128, "sample_rate": 48000, "channels": 2}
+    # слияние с ffmpeg.audio и поддержка старого audio
+    a = {**adef, **(cfg.get("audio", {}) or {}), **(ff.get("audio", {}) or {})}
+
+    # Tee / outputs
+    tdef = {
+        "udp_ports": [10000, 10001, 10002, 10003, 10010],
+        "mpegts_flags": "+resend_headers+pat_pmt_at_frames",
+        "pkt_size": 1316,
+        "publish_rtmp_copy": (cfg.get("mediamtx", {}) or {}).get("publish_rtmp_copy", True),
+        "publish_rtmp_url": (cfg.get("mediamtx", {}) or {}).get("publish_rtmp_url", "rtmp://127.0.0.1/live/stream"),
+    }
+    t = {**tdef, **(ff.get("tee", {}) or {})}
+
+    # RTMP есть?
+    want_rtmp = bool(t.get("publish_rtmp_copy", True) and t.get("publish_rtmp_url"))
+
+    # вставку AUD выключаем, если есть RTMP (чтобы не ломать FLV/RTMP)
+    insert_aud = bool(v.get("insert_aud", True))
+    if want_rtmp:
+        insert_aud = False
+
+    # цепочка битстрим-фильтров
+    bsf_chain = []
+    if insert_aud:
+        bsf_chain.append("h264_metadata=aud=insert")
+    bsf_opt = f" -bsf:v {','.join(bsf_chain)}" if bsf_chain else ""
+
+    # для RTMP нужен AVCC в extradata → включаем global_header только если есть RTMP
+    global_header = " -flags +global_header" if want_rtmp else ""
+
+    # формируем список выходов tee
+    def _ts_sink(url: str, vbit_kbps: int, cfg=None) -> str:
+        """
+        Возвращает описание sink для tee с mpegts.
+        Настраивается через config.yml → ffmpeg.tee.{mpegts_flags,pkt_size} (оба поля опциональны).
+        Гарантируем форму ключа: "mpegts_flags=..." даже если в конфиге записано "+resend_headers...".
+        """
+        ff_tee = ((cfg or {}).get("ffmpeg", {}) or {}).get("tee", {})
+        raw_flags = str(ff_tee.get("mpegts_flags", "+resend_headers+pat_pmt_at_frames"))
+        flags = raw_flags if raw_flags.strip().startswith("mpegts_flags=") else f"mpegts_flags={raw_flags}"
+        pkt = int(ff_tee.get("pkt_size", 1316))
+        return f"[f=mpegts:{flags}]{url}?pkt_size={pkt}"
 
     # 4 локальных UDP-выхода для ristsender + мониторный порт
-    ts_ports = [10000, 10001, 10002, 10003, 10010]
-    ts_outputs = [_ts_sink(f"udp://127.0.0.1:{p}", vbit) for p in ts_ports]
+    ts_ports = (((cfg.get("ffmpeg", {}) or {}).get("tee", {}) or {}).get("udp_ports", [10000, 10001, 10002, 10003, 10010]))
+    ts_outputs = [_ts_sink(f"udp://127.0.0.1:{p}", vbit, cfg) for p in ts_ports]
 
     outputs = list(ts_outputs)
-
-    publish_rtmp = med.get("publish_rtmp_copy", True)
-    rtmp_url = med.get("publish_rtmp_url", "rtmp://127.0.0.1/live/stream")
-    if publish_rtmp:
-        # Для RTMP/FLV — без annexb. Если доступен h264_metadata — можно вставить AUD для совместимости.
-        rtmp_seg = "[f=flv:flvflags=no_duration_filesize]" + rtmp_url
-        outputs.append(rtmp_seg)
-
-    # ВАЖНО: когда используем -f tee, НЕ пишем префикс 'tee:' в самой строке.
+    if want_rtmp:
+        outputs.append("[f=flv:flvflags=no_duration_filesize]" + t.get("publish_rtmp_url"))
     tee_arg = "|".join(outputs)
 
-    # Источник
-    src = str(ingest.get("source", "test")).lower()
+    # Источники
     if src == "test":
-        # Цветные полосы + 1 кГц тон
-        src_args = f"-re -f lavfi -i testsrc2=size={size}:rate={fps},format=yuv420p"
+        src_args = f"-re -f lavfi -i testsrc2=size={size}:rate={vfps},format=yuv420p"
         if a.get("enable", True):
             src_args += f" -f lavfi -i sine=frequency=1000:sample_rate={a.get('sample_rate',48000)}"
     elif src == "uvc":
-        src_args = f"-f v4l2 -framerate {fps} -video_size {size} -i {ingest.get('uvc_device', '/dev/video0')}"
+        src_args = f"-f v4l2 -framerate {vfps} -video_size {size} -i {uvc_dev}"
         if a.get("enable", False):
             pass
     elif src == "rtmp_pull":
-        src_args = f"-i {shlex.quote(ingest.get('rtmp_pull_url','rtmp://127.0.0.1/live/stream'))}"
+        src_args = f"-i {shlex.quote(rtmp_pull_url)}"
     else:
         raise RuntimeError(f"Unknown ingest.source: {src}")
 
-    # Аудио
-    abitr = int(a.get("bitrate_kbps",128))
-    asr = int(a.get("sample_rate",48000))
+    # Аудио кодек
     acodec = "-an"
     if a.get("enable", True):
-        acodec = f"-c:a aac -b:a {abitr}k -ar {asr} -ac 2"
+        acodec = (
+            f"-c:a {a.get('codec','aac')} -b:a {int(a.get('bitrate_kbps',128))}k "
+            f"-ar {int(a.get('sample_rate',48000))} -ac {int(a.get('channels',2))}"
+        )
 
-    # Видео кодирование
-    # x264-params: отключим scenecut/open_gop для стабильного GOP и корректных SPS/PPS
-    # +global_header для лучшей совместимости с контейнерами, где нужны заголовки в extradata
+    # Видео кодек (RTMP ⇒ +global_header; AUD только если нет RTMP)
+    tune = v.get("tune")
+    tune_part = f"-tune {tune} " if tune else ""
+    x264_params = v.get("x264_params", "scenecut=0:open_gop=0:repeat-headers=1")
+
     enc = (
-        f"-c:v libx264 -preset {preset} -tune zerolatency "
-        f"-g {gop} -keyint_min {gop} -x264-params 'scenecut=0:open_gop=0' -flags +global_header "
-        f"-b:v {vbit}k -maxrate {vbit}k -bufsize {vbit*2}k -pix_fmt yuv420p {acodec}"
+        f"-c:v {v.get('codec','libx264')} -preset {v.get('preset','veryfast')} {tune_part}"
+        f"-g {gop} -keyint_min {gop} -x264-params '{x264_params}' "
+        f"-force_key_frames \"expr:gte(t,n_forced*{force_keyint_sec})\" "
+        f"-b:v {vbit}k -maxrate {vmax}k -bufsize {vbuf}k -pix_fmt {v.get('pix_fmt','yuv420p')} "
+        f"{global_header} {acodec}{bsf_opt}"
     )
 
     # TS-дружественные глобальные опции
-    ts_opts = (
-        f"-flush_packets 1 "
-        f"-muxdelay 0 -muxpreload 0"
-    )
+    ts_opts = "-flush_packets 1 -muxdelay 0 -muxpreload 0"
 
     cmd = f"ffmpeg -hide_banner -nostats {src_args} -map 0:v:0"
     if a.get('enable', True) and src == 'test':
         cmd += " -map 1:a:0"
     cmd += f" {enc} {ts_opts} -f tee \"{tee_arg}\""
     return cmd
+
 
 # -----------------------------
 # RIST
@@ -339,6 +477,12 @@ def index():
     except FileNotFoundError:
         cfg_text = ""
     cfg = yaml.safe_load(cfg_text) if cfg_text else {}
+
+    # preview info
+    hls_url = resolve_preview_url(cfg, request.host)
+    mode = ((cfg.get("ingest") or {}).get("source") or (cfg.get("input") or {}).get("mode") or "").strip()
+    stream_name = ((cfg.get("stream") or {}).get("name") or "obs").strip()
+
     senders = cfg.get("rist", {}).get("senders", [])
     rows = ""
     for i, s in enumerate(senders):
@@ -383,7 +527,23 @@ def index():
       .row {{ display:flex; gap:10px; margin:10px 0; }}
       button {{ padding:6px 10px; }}
       .hint {{ color:#666; font-size:0.9em; }}
-    </style></head><body>
+      .pill {{ display:inline-block; padding:4px 10px; border-radius:999px; background:#efefef; margin-right:8px; }}
+      .player {{ max-width:1100px; margin:0 auto 16px; padding:12px 16px; background:#0f0f10; color:#eaeaea; border-radius:12px; }}
+      .player video {{ width:100%; max-height:70vh; background:#000; border-radius:12px; }}
+    </style>
+    <script src=\"https://cdn.jsdelivr.net/npm/hls.js@1\"></script>
+    </head><body>
+
+    <section class=\"player\"> 
+      <h2 style=\"margin:0 0 8px 0\">Предпросмотр</h2>
+      <div style=\"margin:6px 0 10px 0;font:12px/1.4 system-ui,Segoe UI,Roboto,Arial\">
+        {f'<span class=\"pill\">Источник: {mode}</span>' if mode else ''}
+        <span class=\"pill\">Поток: {stream_name}</span>
+        <span style=\"opacity:.9;word-break:break-all\">URL: {hls_url}</span>
+      </div>
+      <video id=\"previewVideo\" controls autoplay playsinline muted></video>
+    </section>
+
     <h2>Processes</h2>
     <ul>
       <li><a href=\"/logs/entrypoint\">entrypoint.log</a></li>
@@ -410,6 +570,26 @@ def index():
       </div>
     </form>
     <p class=\"hint\">Файл: {CONFIG_PATH}</p>
+
+    <script>
+    (function(){{
+      var video = document.getElementById('previewVideo');
+      var src = {hls_url!r};
+      if (window.Hls && Hls.isSupported()) {{
+        var hls = new Hls();
+        hls.loadSource(src);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, function(){{ video.play().catch(function(){{}}); }});
+        hls.on(Hls.Events.ERROR, function(evt, data){{ console.warn('HLS error:', data); }});
+      }} else if (video.canPlayType('application/vnd.apple.mpegurl')) {{
+        video.src = src;  // Safari
+        video.addEventListener('loadedmetadata', function(){{ video.play().catch(function(){{}}); }});
+      }} else {{
+        console.warn('HLS unsupported in this browser');
+      }}
+    }})();
+    </script>
+
     </body></html>"""
     return Response(html, mimetype="text/html")
 
