@@ -328,6 +328,8 @@ def build_ffmpeg_cmd(cfg):
 # -----------------------------
 
 def build_rist_cmds(cfg):
+    import shlex
+
     r = cfg.get("rist", {}) or {}
     ip = r.get("remote_ip")
     port = int(r.get("port", 8000))
@@ -360,25 +362,30 @@ def build_rist_cmds(cfg):
         cname = s.get("cname", f"m{idx}")
         weight = int(s.get("weight", 5))
 
+        # Параметры для peer (ВНИМАНИЕ: тут БЕЗ stream-id)
         params = [
             f"cname={cname}",
-            f"profile={prof}",
+            # f"profile={prof}",  # при необходимости вернём
             f"buffer={buf_ms}",
             f"bandwidth={bw_kbps}",
             f"weight={weight}",
-            f"stream-id={stream_id}",
             f"reorder-buffer={reorder_ms}",
             f"rtt-min={rtt_min}",
             f"rtt-max={rtt_max}",
         ]
-        # Шифрование уместно только вне simple-профиля
-        if prof != "simple" and use_enc and aes_type in (128, 256) and secret:
+        if use_enc and aes_type in (128, 256) and secret:
             params += [f"aes-type={aes_type}", f"secret={secret}"]
 
+        # stream-id переносим в ВХОД ristsender
+        inurl = f"udp://127.0.0.1:{inport}?stream-id={stream_id}"
         outurl = f"rist://{ip}:{port}?" + "&".join(params)
-        cmd = f"ristsender -i udp://127.0.0.1:{inport} -o {outurl}"
+
+        # Экранируем URL, чтобы & и ? не интерпретировались шеллом
+        cmd = f"ristsender -i {shlex.quote(inurl)} -o {shlex.quote(outurl)}"
         cmds.append((cmd, s.get("uid", 0), s.get("gid", 0), f"rist{idx}", True, idx))
+
     return cmds
+
 
 
 # -----------------------------

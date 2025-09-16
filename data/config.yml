@@ -4,12 +4,12 @@ rist:
   remote_ip: 83.222.26.3
   port: 8000
   profile: main
-  buffer_ms: 800
+  buffer_ms: 2500
   bandwidth_kbps: 6000
   stream_id: 1000
   reorder_buffer_ms: 120
   rtt_min_ms: 80
-  rtt_max_ms: 80
+  rtt_max_ms: 800
   encryption:
     enabled: true
     type: 128
@@ -19,7 +19,7 @@ rist:
     cname: m0
     uid: 972
     gid: 968
-    weight: 10
+    weight: 6
     enabled: true
     interface: modem1
     gateway: 192.168.8.1
@@ -27,7 +27,7 @@ rist:
     cname: m1
     uid: 971
     gid: 967
-    weight: 5
+    weight: 7
     enabled: true
     interface: modem2
     gateway: 192.168.14.1
@@ -36,14 +36,14 @@ rist:
     uid: 970
     gid: 966
     enabled: true
-    weight: 5
+    weight: 6
     interface: modem3
     gateway: 192.168.38.1
   - id: 3
     cname: m3
     uid: 969
     gid: 965
-    weight: 5
+    weight: 6
     enabled: true
     interface: modem4
     gateway: 192.168.11.1
