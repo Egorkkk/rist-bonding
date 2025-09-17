@@ -4,12 +4,12 @@ rist:
   remote_ip: 83.222.26.3
   port: 8000
   profile: main
-  buffer_ms: 2500
-  bandwidth_kbps: 6000
+  buffer_ms: 1500
+  bandwidth_kbps: 2000
   stream_id: 1000
-  reorder_buffer_ms: 120
+  reorder_buffer_ms: 800
   rtt_min_ms: 80
-  rtt_max_ms: 800
+  rtt_max_ms: 600
   encryption:
     enabled: true
     type: 128
@@ -19,43 +19,51 @@ rist:
     cname: m0
     uid: 972
     gid: 968
-    weight: 6
+    weight: 5
     enabled: true
     interface: modem1
     gateway: 192.168.8.1
+    virt_ip: 10.255.0.1
+    port: 9001
   - id: 1
     cname: m1
     uid: 971
     gid: 967
-    weight: 7
+    weight: 5
     enabled: true
     interface: modem2
     gateway: 192.168.14.1
+    virt_ip: 10.255.0.2
+    port: 9002
   - id: 2
     cname: m2
     uid: 970
     gid: 966
     enabled: true
-    weight: 6
+    weight: 5
     interface: modem3
-    gateway: 192.168.38.1
+    gateway: 192.168.38.3
+    virt_ip: 10.255.0.3
+    port: 9003
   - id: 3
     cname: m3
     uid: 969
     gid: 965
-    weight: 6
+    weight: 5
     enabled: true
     interface: modem4
     gateway: 192.168.11.1
+    virt_ip: 10.255.0.4
+    port: 9004
 ingest:
   source: test
   uvc_device: /dev/video0
   rtmp_pull_url: rtmp://127.0.0.1/obs/stream
 video:
-  size: 1280x720
-  fps: 30
+  size: 1920x1080
+  fps: 50
   bitrate_kbps: 4000
-  gop: 60
+  gop: 100
   preset: veryfast
 audio:
   enable: true
@@ -71,8 +79,8 @@ ui:
 ffmpeg:
   ingest:
     source: test
-    size: 1280x720
-    fps: 30
+    size: 1920x1080
+    fps: 50
     ffmpeg.video.insert_aud: false
     uvc_device: /dev/video0
     rtmp_pull_url: rtmp://127.0.0.1/obs/stream
@@ -81,11 +89,11 @@ ffmpeg:
     preset: veryfast
     tune: zerolatency
     pix_fmt: yuv420p
-    bitrate_kbps: 4000
-    maxrate_kbps: 4000
-    bufsize_kbps: 8000
-    fps: 30
-    gop: 30
+    bitrate_kbps: 8000
+    maxrate_kbps: 8000
+    bufsize_kbps: 16000
+    fps: 50
+    gop: 50
     force_keyint_sec: 1
     insert_aud: true
     x264_params: scenecut=0:open_gop=0:repeat-headers=1

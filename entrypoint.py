@@ -1,52 +1,39 @@
 #!/usr/bin/env python3
 import logging
 from logging.handlers import RotatingFileHandler
-import os, sys, yaml, signal, threading, subprocess, shlex
+import os, sys, yaml, signal, threading, subprocess
 from http import HTTPStatus
 from urllib.parse import urlparse
-from flask import Flask, request, Response, redirect, url_for, jsonify, send_file
+from flask import Flask, request, Response, redirect, url_for, jsonify
 
 CONFIG_PATH = os.getenv("CONFIG_PATH", "/data/config.yml")
 WEB_PORT = int(os.getenv("WEB_PORT", "8081"))
 
 app = Flask(__name__)
-
 os.makedirs("/data/logs", exist_ok=True)
 
 logger = logging.getLogger("rist-bonding")
 logger.setLevel(logging.INFO)
-
-# file log
 fh = RotatingFileHandler("/data/logs/entrypoint.log", maxBytes=5*1024*1024, backupCount=2, encoding="utf-8")
 fh.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
 logger.addHandler(fh)
-
-# stdout (docker logs)
 sh = logging.StreamHandler(sys.stdout)
 sh.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
 logger.addHandler(sh)
 
-procs = {
-    "mediamtx": None,
-    "ffmpeg": None,
-    "rist": []  # list of Popen
-}
+procs = {"mediamtx": None, "ffmpeg": None, "rist": []}
 lock = threading.RLock()
 
 def popen_logged(cmd, name, preexec=None):
-    """Запускает процесс, пишет stdout/stderr в /data/logs/{name}.log и в общий лог."""
     logfile = f"/data/logs/{name}.log"
     lf = open(logfile, "ab", buffering=0)
-
-    logger.info(f"[START] {name}: {cmd}")
-
+    logger.info(f"[START] {name}: {cmd if isinstance(cmd, str) else ' '.join(cmd)}")
     p = subprocess.Popen(
         cmd if isinstance(cmd, list) else cmd,
         shell=isinstance(cmd, str),
         preexec_fn=preexec,
         stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1
     )
-
     def _pump():
         try:
             for line in iter(p.stdout.readline, b""):
@@ -56,19 +43,13 @@ def popen_logged(cmd, name, preexec=None):
                 except Exception:
                     pass
         finally:
-            try:
-                p.stdout.close()
-            except Exception:
-                pass
-            try:
-                lf.close()
-            except Exception:
-                pass
+            try: p.stdout.close()
+            except Exception: pass
+            try: lf.close()
+            except Exception: pass
             rc = p.poll()
             logger.info(f"[EXIT] {name}: rc={rc}")
-
-    t = threading.Thread(target=_pump, daemon=True)
-    t.start()
+    threading.Thread(target=_pump, daemon=True).start()
     return p
 
 def read_cfg():
@@ -93,7 +74,6 @@ def kill_proc(p):
                 pass
 
 def drop_priv(uid, gid):
-    # используется в preexec_fn, чтобы запустить дочерний процесс под указанным uid/gid
     def _preexec():
         os.setgid(gid)
         os.setuid(uid)
@@ -102,97 +82,26 @@ def drop_priv(uid, gid):
     return _preexec
 
 # -----------------------------
-# Helper: resolve preview HLS URL
+# Helper: HLS preview URL
 # -----------------------------
-
 def resolve_preview_url(cfg, request_host: str) -> str:
-    """
-    Возвращает HLS URL для встраиваемого плеера.
-    Приоритеты:
-      1) cfg['preview_url'] — готовый URL
-      2) http://{public_host}:{http_port}/{stream_name}/index.m3u8
-      3) http://{request_host}:{8888}/{obs}/index.m3u8
-    """
     url = (cfg.get("preview_url") or "").strip()
-    if url:
-        return url
-
+    if url: return url
     med = cfg.get("mediamtx", {}) or {}
     stream = cfg.get("stream", {}) or {}
-
     host = (med.get("public_host") or "").strip()
     port = int(med.get("http_port", 8888))
     name = (stream.get("name") or "obs").strip()
-
     if not host:
-        try:
-            host = urlparse("http://" + request_host).hostname or "localhost"
-        except Exception:
-            host = "localhost"
-
+        try: host = urlparse("http://" + request_host).hostname or "localhost"
+        except Exception: host = "localhost"
     return f"http://{host}:{port}/{name}/index.m3u8"
 
 # -----------------------------
-# FFMPEG PIPELINE (FIXED tee/RTMP), без BSF для TS
+# FFMPEG PIPELINE (tee)
 # -----------------------------
-def _ts_sink(url: str, vbit_kbps: int, cfg=None) -> str:
-    """
-    Возвращает описание sink для tee с mpegts.
-    Настраивается через config.yml → ffmpeg.tee.{mpegts_flags,pkt_size} (оба поля опциональны).
-    Гарантируем форму ключа: "mpegts_flags=..." даже если в конфиге записано "+resend_headers...".
-    """
-    ff_tee = ((cfg or {}).get("ffmpeg", {}) or {}).get("tee", {})
-    raw_flags = str(ff_tee.get("mpegts_flags", "+resend_headers+pat_pmt_at_frames"))
-    flags = raw_flags if raw_flags.strip().startswith("mpegts_flags=") else f"mpegts_flags={raw_flags}"
-    pkt = int(ff_tee.get("pkt_size", 1316))
-    return f"[f=mpegts:{flags}]{url}?pkt_size={pkt}"
-    
 def build_ffmpeg_cmd(cfg):
-    """
-    Собирает команду ffmpeg на основе config.yml.
-    Новая схема настроек (все поля опциональны, есть бэкофы к старым ключам):
-
-    ffmpeg:
-      ingest:
-        source: test|uvc|rtmp_pull
-        size: 1280x720
-        fps: 30
-        uvc_device: /dev/video0
-        rtmp_pull_url: rtmp://127.0.0.1/live/stream
-      video:
-        codec: libx264
-        preset: veryfast
-        tune: zerolatency
-        pix_fmt: yuv420p
-        bitrate_kbps: 4000
-        maxrate_kbps: null   # если не задано -> = bitrate_kbps
-        bufsize_kbps: null   # если не задано -> = 2*bitrate_kbps
-        fps: 30              # если не задано -> из ingest.fps
-        gop: null            # если не задано -> fps*2
-        x264_params: "scenecut=0:open_gop=0:repeat-headers=1"
-        force_keyint_sec: 1
-        insert_aud: true
-      audio:
-        enable: true
-        codec: aac
-        bitrate_kbps: 128
-        sample_rate: 48000
-        channels: 2
-      tee:
-        udp_ports: [10000,10001,10002,10003,10010]
-        mpegts_flags: "+resend_headers+pat_pmt_at_frames"
-        pkt_size: 1316
-        publish_rtmp_copy: true
-        publish_rtmp_url: "rtmp://127.0.0.1/live/stream"
-
-    Также поддерживаются старые поля верхнего уровня: video, audio, ingest, mediamtx.{publish_rtmp_*}.
-    """
-    import shlex
-
-    # секции с бэкофами на старые ключи
     ff = cfg.get("ffmpeg", {}) or {}
-
-    # Ingest
     ingest_cfg = ff.get("ingest", {}) or cfg.get("ingest", {}) or {}
     src = str(ingest_cfg.get("source", "test")).lower()
     size = ingest_cfg.get("size") or (cfg.get("video", {}) or {}).get("size") or "1280x720"
@@ -200,22 +109,11 @@ def build_ffmpeg_cmd(cfg):
     uvc_dev = ingest_cfg.get("uvc_device", "/dev/video0")
     rtmp_pull_url = ingest_cfg.get("rtmp_pull_url", "rtmp://127.0.0.1/live/stream")
 
-    # Video
     vdef = {
-        "codec": "libx264",
-        "preset": "veryfast",
-        "tune": "zerolatency",
-        "pix_fmt": "yuv420p",
-        "bitrate_kbps": 4000,
-        "maxrate_kbps": None,
-        "bufsize_kbps": None,
-        "fps": fps,
-        "gop": None,
-        "x264_params": "scenecut=0:open_gop=0:repeat-headers=1",
-        "force_keyint_sec": 1,
-        "insert_aud": True,
+        "codec":"libx264","preset":"veryfast","tune":"zerolatency","pix_fmt":"yuv420p",
+        "bitrate_kbps":4000,"maxrate_kbps":None,"bufsize_kbps":None,
+        "fps":fps,"gop":None,"x264_params":"scenecut=0:open_gop=0:repeat-headers=1","force_keyint_sec":1,"insert_aud":True,
     }
-    # слияние с ffmpeg.video и поддержка старого video
     v = {**vdef, **(cfg.get("video", {}) or {}), **(ff.get("video", {}) or {})}
     vbit = int(v.get("bitrate_kbps", 4000))
     vmax = int(v.get("maxrate_kbps", vbit))
@@ -224,12 +122,9 @@ def build_ffmpeg_cmd(cfg):
     gop = int(v.get("gop", vfps*2))
     force_keyint_sec = int(v.get("force_keyint_sec", 1))
 
-    # Audio
     adef = {"enable": True, "codec": "aac", "bitrate_kbps": 128, "sample_rate": 48000, "channels": 2}
-    # слияние с ffmpeg.audio и поддержка старого audio
     a = {**adef, **(cfg.get("audio", {}) or {}), **(ff.get("audio", {}) or {})}
 
-    # Tee / outputs
     tdef = {
         "udp_ports": [10000, 10001, 10002, 10003, 10010],
         "mpegts_flags": "+resend_headers+pat_pmt_at_frames",
@@ -238,82 +133,57 @@ def build_ffmpeg_cmd(cfg):
         "publish_rtmp_url": (cfg.get("mediamtx", {}) or {}).get("publish_rtmp_url", "rtmp://127.0.0.1/live/stream"),
     }
     t = {**tdef, **(ff.get("tee", {}) or {})}
-
-    # RTMP есть?
     want_rtmp = bool(t.get("publish_rtmp_copy", True) and t.get("publish_rtmp_url"))
-
-    # вставку AUD выключаем, если есть RTMP (чтобы не ломать FLV/RTMP)
     insert_aud = bool(v.get("insert_aud", True))
-    if want_rtmp:
-        insert_aud = False
-
-    # цепочка битстрим-фильтров
+    if want_rtmp: insert_aud = False
     bsf_chain = []
-    if insert_aud:
-        bsf_chain.append("h264_metadata=aud=insert")
+    if insert_aud: bsf_chain.append("h264_metadata=aud=insert")
     bsf_opt = f" -bsf:v {','.join(bsf_chain)}" if bsf_chain else ""
-
-    # для RTMP нужен AVCC в extradata → включаем global_header только если есть RTMP
     global_header = " -flags +global_header" if want_rtmp else ""
 
-    # формируем список выходов tee
-    def _ts_sink(url: str, vbit_kbps: int, cfg=None) -> str:
-        """
-        Возвращает описание sink для tee с mpegts.
-        Настраивается через config.yml → ffmpeg.tee.{mpegts_flags,pkt_size} (оба поля опциональны).
-        Гарантируем форму ключа: "mpegts_flags=..." даже если в конфиге записано "+resend_headers...".
-        """
+    def _ts_sink(url: str, cfg=None) -> str:
         ff_tee = ((cfg or {}).get("ffmpeg", {}) or {}).get("tee", {})
         raw_flags = str(ff_tee.get("mpegts_flags", "+resend_headers+pat_pmt_at_frames"))
         flags = raw_flags if raw_flags.strip().startswith("mpegts_flags=") else f"mpegts_flags={raw_flags}"
         pkt = int(ff_tee.get("pkt_size", 1316))
         return f"[f=mpegts:{flags}]{url}?pkt_size={pkt}"
 
-    # 4 локальных UDP-выхода для ristsender + мониторный порт
-    ts_ports = (((cfg.get("ffmpeg", {}) or {}).get("tee", {}) or {}).get("udp_ports", [10000, 10001, 10002, 10003, 10010]))
-    ts_outputs = [_ts_sink(f"udp://127.0.0.1:{p}", vbit, cfg) for p in ts_ports]
+    ts_ports = (((cfg.get("ffmpeg", {}) or {}).get("tee", {}) or {}).get("udp_ports", [10000,10001,10002,10003,10010]))
+    ts_outputs = [_ts_sink(f"udp://127.0.0.1:{p}", cfg) for p in ts_ports]
 
     outputs = list(ts_outputs)
     if want_rtmp:
         outputs.append("[f=flv:flvflags=no_duration_filesize]" + t.get("publish_rtmp_url"))
     tee_arg = "|".join(outputs)
 
-    # Источники
     if src == "test":
         src_args = f"-re -f lavfi -i testsrc2=size={size}:rate={vfps},format=yuv420p"
         if a.get("enable", True):
             src_args += f" -f lavfi -i sine=frequency=1000:sample_rate={a.get('sample_rate',48000)}"
     elif src == "uvc":
         src_args = f"-f v4l2 -framerate {vfps} -video_size {size} -i {uvc_dev}"
-        if a.get("enable", False):
-            pass
+        if a.get("enable", False): pass
     elif src == "rtmp_pull":
-        src_args = f"-i {shlex.quote(rtmp_pull_url)}"
+        src_args = f"-i {rtmp_pull_url}"
     else:
         raise RuntimeError(f"Unknown ingest.source: {src}")
 
-    # Аудио кодек
     acodec = "-an"
     if a.get("enable", True):
         acodec = (
             f"-c:a {a.get('codec','aac')} -b:a {int(a.get('bitrate_kbps',128))}k "
             f"-ar {int(a.get('sample_rate',48000))} -ac {int(a.get('channels',2))}"
         )
-
-    # Видео кодек (RTMP ⇒ +global_header; AUD только если нет RTMP)
     tune = v.get("tune")
     tune_part = f"-tune {tune} " if tune else ""
     x264_params = v.get("x264_params", "scenecut=0:open_gop=0:repeat-headers=1")
-
     enc = (
         f"-c:v {v.get('codec','libx264')} -preset {v.get('preset','veryfast')} {tune_part}"
         f"-g {gop} -keyint_min {gop} -x264-params '{x264_params}' "
         f"-force_key_frames \"expr:gte(t,n_forced*{force_keyint_sec})\" "
-        f"-b:v {vbit}k -maxrate {vmax}k -bufsize {vbuf}k -pix_fmt {v.get('pix_fmt','yuv420p')} "
+        f"-b:v {int(vbit)}k -maxrate {int(vmax)}k -bufsize {int(vbuf)}k -pix_fmt {v.get('pix_fmt','yuv420p')} "
         f"{global_header} {acodec}{bsf_opt}"
     )
-
-    # TS-дружественные глобальные опции
     ts_opts = "-flush_packets 1 -muxdelay 0 -muxpreload 0"
 
     cmd = f"ffmpeg -hide_banner -nostats {src_args} -map 0:v:0"
@@ -322,50 +192,57 @@ def build_ffmpeg_cmd(cfg):
     cmd += f" {enc} {ts_opts} -f tee \"{tee_arg}\""
     return cmd
 
-
 # -----------------------------
-# RIST
+# RIST (один процесс, несколько -o)
 # -----------------------------
+def _primary_ts_port(cfg) -> int:
+    ports = (((cfg.get("ffmpeg", {}) or {}).get("tee", {}) or {}).get("udp_ports", [10000,10001,10002,10003,10010]))
+    return int(ports[0] if ports else 10000)
 
-def build_rist_cmds(cfg):
-    import shlex
-
+def build_rist_cmd_single(cfg):
+    """
+    Собирает ОДНУ команду ristsender:
+      - один -i (первый локальный UDP порт из ffmpeg tee)
+      - несколько -o rist://<virt_ip>:<virt_port>?<params>  (по количеству enabled senders)
+    Виртуальные IP/порты должны соответствовать правилам DNAT в rist_policy.sh.
+    """
     r = cfg.get("rist", {}) or {}
-    ip = r.get("remote_ip")
-    port = int(r.get("port", 8000))
-
-    prof = (r.get("profile") or "main").strip().lower()
+    # Глобальные параметры RIST
     buf_ms = int(r.get("buffer_ms", 800))
     bw_kbps = int(r.get("bandwidth_kbps", 12000))
-
-    # Новые опции из конфига:
-    stream_id = int(r.get("stream_id", 1000))
-    if stream_id % 2:
-        stream_id += 1  # Mist/TSRIST требует чётный ID
-
     reorder_ms = int(r.get("reorder_buffer_ms", 120))
     rtt_min = int(r.get("rtt_min_ms", 80))
     rtt_max = int(r.get("rtt_max_ms", rtt_min))
-
     enc = r.get("encryption", {}) or {}
     use_enc = bool(enc.get("enabled", False))
     aes_type = int(enc.get("type", 128))
     secret = (enc.get("secret") or "").strip()
 
-    cmds = []
+    # Виртуальные значения по умолчанию (можно переопределить в конфиге у sender'а)
+    default_virt_ips = ["10.255.0.1","10.255.0.2","10.255.0.3","10.255.0.4"]
+    default_ports    = [9001,9002,9003,9004]
+
+    enabled_senders = []
     for idx, s in enumerate(r.get("senders", [])):
-        if s.get("enabled", True) is False:
-            cmds.append((None, s.get("uid", 0), s.get("gid", 0), f"rist{idx}", False, idx))
-            continue
+        if not s.get("enabled", True): continue
+        enabled_senders.append((idx, s))
+    if not enabled_senders:
+        return None, 0, 0, "rist", False
 
-        inport = 10000 + idx
-        cname = s.get("cname", f"m{idx}")
+    # Вход один (первый порт tee)
+    in_port = _primary_ts_port(cfg)
+    inurl = f"udp://127.0.0.1:{in_port}"
+
+    # Выходы (по одному на путь)
+    out_urls = []
+    for idx, s in enabled_senders:
+        cname  = s.get("cname", f"m{idx}")
         weight = int(s.get("weight", 5))
+        virt_ip = (s.get("virt_ip") or (default_virt_ips[idx] if idx < len(default_virt_ips) else f"10.255.0.{idx+1}"))
+        virt_pt = int(s.get("port", default_ports[idx] if idx < len(default_ports) else 9000+idx+1))
 
-        # Параметры для peer (ВНИМАНИЕ: тут БЕЗ stream-id)
         params = [
             f"cname={cname}",
-            # f"profile={prof}",  # при необходимости вернём
             f"buffer={buf_ms}",
             f"bandwidth={bw_kbps}",
             f"weight={weight}",
@@ -375,23 +252,21 @@ def build_rist_cmds(cfg):
         ]
         if use_enc and aes_type in (128, 256) and secret:
             params += [f"aes-type={aes_type}", f"secret={secret}"]
+        out_urls.append(f"rist://{virt_ip}:{virt_pt}?" + "&".join(params))
 
-        # stream-id переносим в ВХОД ristsender
-        inurl = f"udp://127.0.0.1:{inport}?stream-id={stream_id}"
-        outurl = f"rist://{ip}:{port}?" + "&".join(params)
+    # Формируем argv список, чтобы избежать проблем с shell-квотами
+    argv = ["ristsender", "-i", inurl]
+    for u in out_urls:
+        argv += ["-o", u]
 
-        # Экранируем URL, чтобы & и ? не интерпретировались шеллом
-        cmd = f"ristsender -i {shlex.quote(inurl)} -o {shlex.quote(outurl)}"
-        cmds.append((cmd, s.get("uid", 0), s.get("gid", 0), f"rist{idx}", True, idx))
-
-    return cmds
-
-
+    # Под кем запускать процесс: берём uid/gid из r.['run_uid'/'run_gid'] или 0/0
+    run_uid = int(r.get("run_uid", 0))
+    run_gid = int(r.get("run_gid", 0))
+    return argv, run_uid, run_gid, "rist", True
 
 # -----------------------------
 # LIFECYCLE
 # -----------------------------
-
 def start_all():
     with lock:
         cfg = read_cfg()
@@ -412,27 +287,20 @@ def start_all():
         logger.info(f"[FFMPEG CMD] {ff_cmd}")
         procs["ffmpeg"] = popen_logged(ff_cmd, name="ffmpeg")
 
-        # RIST senders
+        # RIST (один процесс)
         for p in procs["rist"]:
             kill_proc(p)
         procs["rist"].clear()
 
-        tuples = build_rist_cmds(cfg)  # (cmd, uid, gid, name, enabled, idx)
-        max_idx = -1
-        for _cmd, _uid, _gid, _name, _enabled, _idx in tuples:
-            max_idx = max(max_idx, _idx)
-        procs["rist"] = [None] * (max_idx + 1 if max_idx >= 0 else 0)
-
-        for cmd, uid, gid, name, enabled, idx in tuples:
-            logger.info(f"[RIST] idx={idx} uid={uid} gid={gid} enabled={enabled} cmd={cmd}")
-            if enabled and cmd:
-                p = popen_logged(
-                    cmd,
-                    name=f"rist{idx}",
-                    preexec=drop_priv(int(uid), int(gid))
-                )
-                procs["rist"][idx] = p
-            # если выключен — оставляем None
+        cmd_tuple = build_rist_cmd_single(cfg)  # argv, uid, gid, name, enabled
+        if cmd_tuple and cmd_tuple[-1]:
+            argv, uid, gid, name, _ = cmd_tuple
+            logger.info(f"[RIST/CMD] {' '.join(argv)} (uid={uid}, gid={gid})")
+            p = popen_logged(argv, name=name, preexec=drop_priv(int(uid), int(gid)) if (uid or gid) else None)
+            procs["rist"] = [p]
+        else:
+            logger.info("[RIST] No enabled senders; ristsender not started.")
+            procs["rist"] = []
 
 def stop_all():
     with lock:
@@ -445,53 +313,9 @@ def stop_all():
         procs["mediamtx"] = None
         procs["rist"] = []
 
-def start_sender(idx):
-    with lock:
-        cfg = read_cfg()
-        senders = cfg.get("rist", {}).get("senders", [])
-        if idx < 0 or idx >= len(senders):
-            return False, "bad index"
-        s = senders[idx]
-        if not s.get("enabled", True):
-            return False, "disabled in config"
-        if idx < len(procs["rist"]) and procs["rist"][idx] is not None:
-            kill_proc(procs["rist"][idx]); procs["rist"][idx] = None
-
-        tmp_cfg = {"rist": dict(cfg["rist"])}
-        tmp_cfg["rist"]["senders"] = [dict(x) for x in senders]
-        for i, X in enumerate(tmp_cfg["rist"]["senders"]):
-            X["enabled"] = (i == idx)
-
-        cmd_tuples = build_rist_cmds(tmp_cfg)
-        cmd, uid, gid, name, enabled, _ = cmd_tuples[idx]
-        if not enabled or not cmd:
-            return False, "not enabled/empty"
-
-        logger.info(f"[RIST/ONE] idx={idx} uid={uid} gid={gid} cmd={cmd}")
-        p = popen_logged(
-            cmd,
-            name=f"rist{idx}",
-            preexec=drop_priv(int(uid), int(gid))
-        )
-
-        while len(procs["rist"]) <= idx:
-            procs["rist"].append(None)
-        procs["rist"][idx] = p
-        return True, "started"
-
-def stop_sender(idx):
-    with lock:
-        if idx < 0 or idx >= len(procs["rist"]):
-            return False, "bad index"
-        kill_proc(procs["rist"][idx])
-        procs["rist"][idx] = None
-        logger.info(f"[RIST/STOP] idx={idx}")
-        return True, "stopped"
-
 # -----------------------------
 # HTTP UI
 # -----------------------------
-
 @app.route("/", methods=["GET"])
 def index():
     cfg_text = ""
@@ -502,46 +326,44 @@ def index():
         cfg_text = ""
     cfg = yaml.safe_load(cfg_text) if cfg_text else {}
 
-    # preview info
     hls_url = resolve_preview_url(cfg, request.host)
     mode = ((cfg.get("ingest") or {}).get("source") or (cfg.get("input") or {}).get("mode") or "").strip()
     stream_name = ((cfg.get("stream") or {}).get("name") or "obs").strip()
 
-    senders = cfg.get("rist", {}).get("senders", [])
+    senders = cfg.get("rist", {}).get("senders", []) or []
     rows = ""
+    running = ("running" if (procs["rist"] and procs["rist"][0] and procs["rist"][0].poll() is None) else "stopped")
     for i, s in enumerate(senders):
         enabled = bool(s.get("enabled", True))
         weight = int(s.get("weight", 5))
-        status = "—"
-        if i < len(procs["rist"]):
-            status = "running" if (procs["rist"][i] and procs["rist"][i].poll() is None) else "stopped"
+        virt_ip = s.get("virt_ip", f"10.255.0.{i+1}")
+        virt_pt = int(s.get("port", 9000+i+1))
         btn_label = "Выключить" if enabled else "Включить"
         rows += f"""
         <tr>
           <td>{i}</td>
           <td>{s.get('cname', f"m{i}")}</td>
-          <td>{s.get('uid')}/{s.get('gid')}</td>
+          <td>{virt_ip}:{virt_pt}</td>
           <td>{'on' if enabled else 'off'}</td>
-          <td>{status}</td>
+          <td>{running if enabled else '—'}</td>
           <td>
-            <form method=\"POST\" action=\"/toggle\" style=\"display:inline\">
-              <input type=\"hidden\" name=\"sender\" value=\"{i}\">
-              <input type=\"hidden\" name=\"action\" value=\"{'disable' if enabled else 'enable'}\">
-              <button type=\"submit\">{btn_label}</button>
+            <form method="POST" action="/toggle" style="display:inline">
+              <input type="hidden" name="sender" value="{i}">
+              <input type="hidden" name="action" value="{'disable' if enabled else 'enable'}">
+              <button type="submit">{btn_label}</button>
             </form>
           </td>
           <td>
-            <form method=\"POST\" action=\"/set_weight\" style=\"display:inline\">
-              <input type=\"hidden\" name=\"sender\" value=\"{i}\">
-              <input type=\"number\" min=\"0\" max=\"1000\" name=\"weight\" value=\"{weight}\">
-              <button type=\"submit\">Применить</button>
+            <form method="POST" action="/set_weight" style="display:inline">
+              <input type="hidden" name="sender" value="{i}">
+              <input type="number" min="0" max="1000" name="weight" value="{weight}">
+              <button type="submit">Применить</button>
             </form>
           </td>
-          <td><a href=\"/logs/rist{i}\">log</a></td>
         </tr>
         """
     html = f"""
-    <html><head><meta charset=\"utf-8\"><title>RIST Bonding</title>
+    <html><head><meta charset="utf-8"><title>RIST Bonding</title>
     <style>
       body {{ font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; max-width: 1100px; margin: 20px auto; }}
       textarea {{ width: 100%; height: 50vh; }}
@@ -555,30 +377,31 @@ def index():
       .player {{ max-width:1100px; margin:0 auto 16px; padding:12px 16px; background:#0f0f10; color:#eaeaea; border-radius:12px; }}
       .player video {{ width:100%; max-height:70vh; background:#000; border-radius:12px; }}
     </style>
-    <script src=\"https://cdn.jsdelivr.net/npm/hls.js@1\"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
     </head><body>
 
-    <section class=\"player\"> 
-      <h2 style=\"margin:0 0 8px 0\">Предпросмотр</h2>
-      <div style=\"margin:6px 0 10px 0;font:12px/1.4 system-ui,Segoe UI,Roboto,Arial\">
-        {f'<span class=\"pill\">Источник: {mode}</span>' if mode else ''}
-        <span class=\"pill\">Поток: {stream_name}</span>
-        <span style=\"opacity:.9;word-break:break-all\">URL: {hls_url}</span>
+    <section class="player"> 
+      <h2 style="margin:0 0 8px 0">Предпросмотр</h2>
+      <div style="margin:6px 0 10px 0;font:12px/1.4 system-ui,Segoe UI,Roboto,Arial">
+        {f'<span class="pill">Источник: {mode}</span>' if mode else ''}
+        <span class="pill">Поток: {stream_name}</span>
+        <span style="opacity:.9;word-break:break-all">URL: {hls_url}</span>
       </div>
-      <video id=\"previewVideo\" controls autoplay playsinline muted></video>
+      <video id="previewVideo" controls autoplay playsinline muted></video>
     </section>
 
     <h2>Processes</h2>
     <ul>
-      <li><a href=\"/logs/entrypoint\">entrypoint.log</a></li>
-      <li><a href=\"/logs/ffmpeg\">ffmpeg.log</a></li>
-      <li><a href=\"/logs/mediamtx\">mediamtx.log</a></li>
+      <li><a href="/logs/entrypoint">entrypoint.log</a></li>
+      <li><a href="/logs/ffmpeg">ffmpeg.log</a></li>
+      <li><a href="/logs/rist">ristsender.log</a></li>
+      <li><a href="/logs/mediamtx">mediamtx.log</a></li>
     </ul>
 
-    <h2>RIST senders</h2>
+    <h2>RIST paths (один процесс ristsender)</h2>
     <table>
       <thead><tr>
-        <th>#</th><th>CNAME</th><th>UID/GID</th><th>Enabled</th><th>Status</th><th>Toggle</th><th>Weight</th><th>Log</th>
+        <th>#</th><th>CNAME</th><th>Virt dst</th><th>Enabled</th><th>Status</th><th>Toggle</th><th>Weight</th>
       </tr></thead>
       <tbody>
         {rows}
@@ -586,14 +409,14 @@ def index():
     </table>
 
     <h2>Raw config editor</h2>
-    <form method=\"POST\" action=\"/save\">
-      <textarea name=\"cfg\">{cfg_text}</textarea>
-      <div class=\"row\">
-        <button type=\"submit\">Сохранить и перезапустить всё</button>
-        <a href=\"/status\">Статус (JSON)</a>
+    <form method="POST" action="/save">
+      <textarea name="cfg">{cfg_text}</textarea>
+      <div class="row">
+        <button type="submit">Сохранить и перезапустить всё</button>
+        <a href="/status">Статус (JSON)</a>
       </div>
     </form>
-    <p class=\"hint\">Файл: {CONFIG_PATH}</p>
+    <p class="hint">Файл: {CONFIG_PATH}</p>
 
     <script>
     (function(){{
@@ -606,10 +429,10 @@ def index():
         hls.on(Hls.Events.MANIFEST_PARSED, function(){{ video.play().catch(function(){{}}); }});
         hls.on(Hls.Events.ERROR, function(evt, data){{ console.warn('HLS error:', data); }});
       }} else if (video.canPlayType('application/vnd.apple.mpegurl')) {{
-        video.src = src;  // Safari
+        video.src = src;
         video.addEventListener('loadedmetadata', function(){{ video.play().catch(function(){{}}); }});
       }} else {{
-        console.warn('HLS unsupported in this browser');
+        console.warn('HLS unsupported');
       }}
     }})();
     </script>
@@ -635,23 +458,23 @@ def save():
 def status():
     with lock:
         cfg = read_cfg()
-        senders = cfg.get("rist", {}).get("senders", [])
-        def stat(p): return ("running" if (p and p.poll() is None) else "stopped")
+        senders = cfg.get("rist", {}).get("senders", []) or []
+        running = ("running" if (procs["rist"] and procs["rist"][0] and procs["rist"][0].poll() is None) else "stopped")
         items = []
         for i, s in enumerate(senders):
-            p = procs["rist"][i] if i < len(procs["rist"]) else None
             items.append({
-                "id": s.get("id", i),
+                "id": i,
                 "enabled": bool(s.get("enabled", True)),
                 "weight": int(s.get("weight", 5)),
-                "uid": s.get("uid"),
-                "gid": s.get("gid"),
-                "status": stat(p)
+                "virt_ip": s.get("virt_ip", f"10.255.0.{i+1}"),
+                "virt_port": int(s.get("port", 9000+i+1)),
+                "status": running if s.get("enabled", True) else "disabled"
             })
         data = {
             "mediamtx": ("running" if (procs.get("mediamtx") and procs["mediamtx"].poll() is None) else "stopped"),
             "ffmpeg":  ("running" if (procs.get("ffmpeg") and procs["ffmpeg"].poll() is None) else "stopped"),
-            "senders": items
+            "rist_proc": running,
+            "paths": items
         }
         return jsonify(data)
 
@@ -659,33 +482,22 @@ def status():
 def toggle_sender():
     try:
         idx = int(request.form.get("sender"))
-        action = request.form.get("action", "toggle")  # 'enable'/'disable'/'toggle'
+        action = request.form.get("action", "toggle")
     except Exception:
         return Response("bad params", status=400)
 
     cfg = read_cfg()
-    senders = cfg.get("rist", {}).get("senders", [])
-    if idx < 0 or idx >= len(senders):
-        return Response("bad index", status=400)
+    senders = cfg.get("rist", {}).get("senders", []) or []
+    if idx < 0 or idx >= len(senders): return Response("bad index", status=400)
 
-    current = bool(senders[idx].get("enabled", True))
-    if action == "toggle":
-        newval = not current
-    elif action == "enable":
-        newval = True
-    elif action == "disable":
-        newval = False
-    else:
-        return Response("bad action", status=400)
-
+    cur = bool(senders[idx].get("enabled", True))
+    newval = (not cur) if action == "toggle" else (action == "enable")
     senders[idx]["enabled"] = newval
     with open(CONFIG_PATH, "w", encoding="utf-8") as f:
         yaml.safe_dump(cfg, f, allow_unicode=True, sort_keys=False)
 
-    if newval:
-        ok, msg = start_sender(idx)
-    else:
-        ok, msg = stop_sender(idx)
+    # Пересобираем весь ristsender
+    stop_all(); start_all()
     return redirect(url_for("index"))
 
 @app.route("/set_weight", methods=["POST"])
@@ -699,41 +511,30 @@ def set_weight():
         return Response("weight out of range (0..1000)", status=400)
 
     cfg = read_cfg()
-    senders = cfg.get("rist", {}).get("senders", [])
-    if idx < 0 or idx >= len(senders):
-        return Response("bad index", status=400)
+    senders = cfg.get("rist", {}).get("senders", []) or []
+    if idx < 0 or idx >= len(senders): return Response("bad index", status=400)
     senders[idx]["weight"] = weight
 
     with open(CONFIG_PATH, "w", encoding="utf-8") as f:
         yaml.safe_dump(cfg, f, allow_unicode=True, sort_keys=False)
 
-    if senders[idx].get("enabled", True):
-        stop_sender(idx)
-        start_sender(idx)
-
+    # Пересобираем весь ristsender
+    stop_all(); start_all()
     return redirect(url_for("index"))
 
 @app.route("/logs/<name>", methods=["GET"])
 def logs(name):
-    # простой просмотр логов: /logs/ffmpeg?n=200
     safe = "".join(ch for ch in name if ch.isalnum() or ch in ("-", "_"))
     n = request.args.get("n", "200")
-    try:
-        n = max(1, min(10000, int(n)))
-    except Exception:
-        n = 200
+    try: n = max(1, min(10000, int(n)))
+    except Exception: n = 200
     path = f"/data/logs/{safe}.log"
-    if not os.path.exists(path):
-        return Response("not found", status=404)
+    if not os.path.exists(path): return Response("not found", status=404)
     try:
-        # читаем хвост файла
         with open(path, "rb") as f:
             try:
-                f.seek(0, os.SEEK_END)
-                size = f.tell()
-                # прочитаем примерно n строк (грубо)
-                chunk = min(size, 1024*64)
-                f.seek(-chunk, os.SEEK_END)
+                f.seek(0, os.SEEK_END); size = f.tell()
+                chunk = min(size, 1024*64); f.seek(-chunk, os.SEEK_END)
             except Exception:
                 f.seek(0)
             data = f.read().decode("utf-8", errors="replace")
@@ -742,17 +543,9 @@ def logs(name):
     except Exception as e:
         return Response(f"read error: {e}", status=500)
 
-# -----------------------------
-# SIGNALS
-# -----------------------------
-
 def sigterm(_sig, _frm):
     stop_all()
     sys.exit(0)
-
-# -----------------------------
-# MAIN
-# -----------------------------
 
 def main():
     signal.signal(signal.SIGTERM, sigterm)
