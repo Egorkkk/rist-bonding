@@ -201,68 +201,59 @@ def _primary_ts_port(cfg) -> int:
 
 def build_rist_cmd_single(cfg):
     """
-    Собирает ОДНУ команду ristsender:
-      - один -i (первый локальный UDP порт из ffmpeg tee)
-      - несколько -o rist://<virt_ip>:<virt_port>?<params>  (по количеству enabled senders)
-    Виртуальные IP/порты должны соответствовать правилам DNAT в rist_policy.sh.
+    Один процесс ristsender:
+      - один -i (первый порт tee)
+      - несколько -o rist://<SRV_IP>:<sender.port>?...
+    Маршрутизация по модемам делается на хосте по dport (9001..9004), а затем DNAT порт -> 8000.
     """
     r = cfg.get("rist", {}) or {}
-    # Глобальные параметры RIST
-    buf_ms = int(r.get("buffer_ms", 800))
-    bw_kbps = int(r.get("bandwidth_kbps", 12000))
-    reorder_ms = int(r.get("reorder_buffer_ms", 120))
-    rtt_min = int(r.get("rtt_min_ms", 80))
-    rtt_max = int(r.get("rtt_max_ms", rtt_min))
-    enc = r.get("encryption", {}) or {}
-    use_enc = bool(enc.get("enabled", False))
-    aes_type = int(enc.get("type", 128))
-    secret = (enc.get("secret") or "").strip()
 
-    # Виртуальные значения по умолчанию (можно переопределить в конфиге у sender'а)
-    default_virt_ips = ["10.255.0.1","10.255.0.2","10.255.0.3","10.255.0.4"]
-    default_ports    = [9001,9002,9003,9004]
-
-    enabled_senders = []
-    for idx, s in enumerate(r.get("senders", [])):
-        if not s.get("enabled", True): continue
-        enabled_senders.append((idx, s))
-    if not enabled_senders:
+    srv_ip   = (r.get("remote_ip") or "").strip()
+    if not srv_ip:
         return None, 0, 0, "rist", False
 
-    # Вход один (первый порт tee)
-    in_port = _primary_ts_port(cfg)
-    inurl = f"udp://127.0.0.1:{in_port}"
+    buf_ms   = int(r.get("buffer_ms", 800))
+    bw_kbps  = int(r.get("bandwidth_kbps", 12000))
+    reorder  = int(r.get("reorder_buffer_ms", 120))
+    rtt_min  = int(r.get("rtt_min_ms", 80))
+    rtt_max  = int(r.get("rtt_max_ms", rtt_min))
+    enc      = r.get("encryption", {}) or {}
+    use_enc  = bool(enc.get("enabled", False))
+    aes_type = int(enc.get("type", 128))
+    secret   = (enc.get("secret") or "").strip()
 
-    # Выходы (по одному на путь)
-    out_urls = []
-    for idx, s in enabled_senders:
+    # вход — первый UDP порт tee
+    in_port = _primary_ts_port(cfg)
+    inurl   = f"udp://127.0.0.1:{in_port}"
+
+    enabled = [(i, s) for i, s in enumerate(r.get("senders", []) or []) if s.get("enabled", True)]
+    if not enabled:
+        return None, 0, 0, "rist", False
+
+    argv = ["ristsender", "-i", inurl]
+    for idx, s in enabled:
+        # per-sender порт (до DNAT): 9001..9004
+        dport  = int(s.get("port", 9001 + idx))
         cname  = s.get("cname", f"m{idx}")
         weight = int(s.get("weight", 5))
-        virt_ip = (s.get("virt_ip") or (default_virt_ips[idx] if idx < len(default_virt_ips) else f"10.255.0.{idx+1}"))
-        virt_pt = int(s.get("port", default_ports[idx] if idx < len(default_ports) else 9000+idx+1))
-
         params = [
             f"cname={cname}",
             f"buffer={buf_ms}",
             f"bandwidth={bw_kbps}",
             f"weight={weight}",
-            f"reorder-buffer={reorder_ms}",
+            f"reorder-buffer={reorder}",
             f"rtt-min={rtt_min}",
             f"rtt-max={rtt_max}",
         ]
         if use_enc and aes_type in (128, 256) and secret:
             params += [f"aes-type={aes_type}", f"secret={secret}"]
-        out_urls.append(f"rist://{virt_ip}:{virt_pt}?" + "&".join(params))
+        outurl = f"rist://{srv_ip}:{dport}?" + "&".join(params)
+        argv += ["-o", outurl]
 
-    # Формируем argv список, чтобы избежать проблем с shell-квотами
-    argv = ["ristsender", "-i", inurl]
-    for u in out_urls:
-        argv += ["-o", u]
-
-    # Под кем запускать процесс: берём uid/gid из r.['run_uid'/'run_gid'] или 0/0
     run_uid = int(r.get("run_uid", 0))
     run_gid = int(r.get("run_gid", 0))
     return argv, run_uid, run_gid, "rist", True
+
 
 # -----------------------------
 # LIFECYCLE

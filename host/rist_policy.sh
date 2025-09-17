@@ -2,17 +2,14 @@
 set -euo pipefail
 # set -x
 
-# ================== ПАРАМЕТРЫ ==================
+# ====== ПАРАМЕТРЫ ======
 SRV="83.222.26.3"
-SRV_PORT="8000"                # <- у тебя теперь 8000
+SRV_PORT="8000"          # целевой порт на сервере
 
-# Виртуальные цели для ristsender (локальные «псевдо-IP» и порты)
-V1="10.255.0.1"; P1=9001
-V2="10.255.0.2"; P2=9002
-V3="10.255.0.3"; P3=9003
-V4="10.255.0.4"; P4=9004
+# DPORT'ы до DNAT (должны совпадать с тем, что в entrypoint/config)
+P1=9001; P2=9002; P3=9003; P4=9004
 
-# Модемы
+# Интерфейсы/шлюзы/адреса модемов
 IF1="modem1"; GW1="192.168.8.1";   IP1="192.168.8.198";  NET1="192.168.8.0/24"
 IF2="modem2"; GW2="192.168.14.1";  IP2="192.168.14.100"; NET2="192.168.14.0/24"
 IF3="modem3"; GW3="192.168.38.1";  IP3="192.168.38.100"; NET3="192.168.38.0/24"
@@ -22,13 +19,14 @@ IF4="modem4"; GW4="192.168.11.1";  IP4="192.168.11.100"; NET4="192.168.11.0/24"
 T1=100; T2=101; T3=102; T4=103
 N1="modem1"; N2="modem2"; N3="modem3"; N4="modem4"
 
-# Цепочка DNAT
-CHAIN="RIST_DNAT"
-# =================================================
+# Наши цепочки
+MCHAIN="RIST_MARK"   # mangle/OUTPUT
+NCHAIN="RIST_DNAT"   # nat/OUTPUT
+# =======================
 
-require_root() { if [ "$(id -u)" -ne 0 ]; then echo "Run as root (sudo)." >&2; exit 1; fi; }
+root() { [ "$(id -u)" -eq 0 ] || { echo "Run as root"; exit 1; }; }
 
-write_rt_tables_file() {
+rt_tables() {
   mkdir -p /etc/iproute2
   if [ -d /etc/iproute2/rt_tables.d ]; then
     cat > /etc/iproute2/rt_tables.d/99-rist-bonding.conf <<EOF
@@ -48,7 +46,7 @@ EOF
   fi
 }
 
-write_sysctl() {
+sysctl_loose() {
   cat >/etc/sysctl.d/99-rist-bonding.conf <<EOF
 net.ipv4.conf.all.rp_filter = 2
 net.ipv4.conf.${IF1}.rp_filter = 2
@@ -59,79 +57,59 @@ EOF
   sysctl --system >/dev/null
 }
 
-# ---- УТИЛИТЫ IPTABLES ----
-# удалить ВСЕ прямые DNAT к 10.255.0.[1-4]:900X в nat/OUTPUT (независимо от --to-destination и порядка опций)
-purge_direct_dnat_virtuals_output() {
-  # 1) попытка по -S (rulespec) — с очень широким шаблоном
-  for pass in 1 2 3 4 5; do
-    local removed=0
-    while read -r line; do
-      # линейка вида: -A OUTPUT ... -d 10.255.0.X ... --dport 900X ... -j DNAT ...
-      local m; m=$(grep -E -- "-A OUTPUT .*10\.255\.0\.(1|2|3|4)(/32)? .* --dport (9001|9002|9003|9004) .* -j DNAT" <<<"$line" || true)
-      [ -z "$m" ] && continue
-      local spec="${line#-A OUTPUT }"
-      if iptables -t nat -D OUTPUT $spec 2>/dev/null; then removed=1; fi
-    done < <(iptables -t nat -S OUTPUT)
-    [ "$removed" = 0 ] && break
-  done
-
-  # 2) fallback по -L --line-numbers (если вдруг что-то осталось)
-  for pass in 1 2 3 4 5 6 7 8; do
-    mapfile -t LNS < <(
-      iptables -t nat -L OUTPUT --line-numbers -n \
-      | awk '/DNAT/ && /10\.255\.0\.(1|2|3|4)(\/32)?/ && /(dpt:9001|dpt:9002|dpt:9003|dpt:9004)/ {print $1}' \
-      | sort -rn
-    )
-    [ "${#LNS[@]}" -eq 0 ] && break
-    for ln in "${LNS[@]}"; do iptables -t nat -D OUTPUT "$ln" || true; done
-  done
-}
-
-# старые owner/SNAT → снести по номерам строк
-purge_owner_snat_to_srv_output() {
-  for pass in 1 2 3; do
-    mapfile -t LNS < <(
-      iptables -t nat -L OUTPUT --line-numbers -n \
-      | awk -v srv="$SRV" -v dpt="$SRV_PORT" '/SNAT/ && $0 ~ srv && $0 ~ ("dpt:" dpt) && /owner UID match/ {print $1}' \
-      | sort -rn
-    )
-    [ "${#LNS[@]}" -eq 0 ] && break
-    for ln in "${LNS[@]}"; do iptables -t nat -D OUTPUT "$ln" || true; done
-  done
-}
-
-# создать/починить свою цепочку и единственный jump
-ensure_nat_chain() {
-  iptables -t nat -N "$CHAIN" 2>/dev/null || true
-  if ! iptables -t nat -C OUTPUT -j "$CHAIN" 2>/dev/null; then
-    iptables -t nat -I OUTPUT 1 -j "$CHAIN"
+# --- ЦЕПОЧКИ IPTABLES ---
+ensure_mangle_chain() {
+  iptables -t mangle -N "$MCHAIN" 2>/dev/null || true
+  if ! iptables -t mangle -C OUTPUT -j "$MCHAIN" 2>/dev/null; then
+    iptables -t mangle -I OUTPUT 1 -j "$MCHAIN"
   fi
-  # удалить возможные дубликаты jump'ов
+  # убрать дубликаты прыжка
   while :; do
-    mapfile -t JUMPS < <(iptables -t nat -L OUTPUT --line-numbers \
-      | awk -v c="$CHAIN" '$0 ~ ("jump " c) {print $1}' | sort -rn)
-    [ "${#JUMPS[@]}" -le 1 ] && break
-    for ((i=0;i<${#JUMPS[@]}-1;i++)); do iptables -t nat -D OUTPUT "${JUMPS[i]}" || true; done
+    mapfile -t L < <(iptables -t mangle -L OUTPUT --line-numbers | awk -v c="$MCHAIN" '$0 ~ ("jump " c) {print $1}' | sort -rn)
+    [ "${#L[@]}" -le 1 ] && break
+    for i in "${L[@]:0:${#L[@]}-1}"; do iptables -t mangle -D OUTPUT "$i" || true; done
   done
 }
 
-# полностью пересобрать содержимое нашей цепочки
-rebuild_rist_dnat_chain() {
-  ensure_nat_chain
-  iptables -t nat -F "$CHAIN"
-
-  iptables -t nat -A "$CHAIN" -p udp -d "$V1" --dport "$P1" -j DNAT --to-destination "$SRV:$SRV_PORT" -m comment --comment "rist v1"
-  iptables -t nat -A "$CHAIN" -p udp -d "$V2" --dport "$P2" -j DNAT --to-destination "$SRV:$SRV_PORT" -m comment --comment "rist v2"
-  iptables -t nat -A "$CHAIN" -p udp -d "$V3" --dport "$P3" -j DNAT --to-destination "$SRV:$SRV_PORT" -m comment --comment "rist v3"
-  iptables -t nat -A "$CHAIN" -p udp -d "$V4" --dport "$P4" -j DNAT --to-destination "$SRV:$SRV_PORT" -m comment --comment "rist v4"
+ensure_nat_chain() {
+  iptables -t nat -N "$NCHAIN" 2>/dev/null || true
+  if ! iptables -t nat -C OUTPUT -j "$NCHAIN" 2>/dev/null; then
+    iptables -t nat -I OUTPUT 1 -j "$NCHAIN"
+  fi
+  while :; do
+    mapfile -t L < <(iptables -t nat -L OUTPUT --line-numbers | awk -v c="$NCHAIN" '$0 ~ ("jump " c) {print $1}' | sort -rn)
+    [ "${#L[@]}" -le 1 ] && break
+    for i in "${L[@]:0:${#L[@]}-1}"; do iptables -t nat -D OUTPUT "$i" || true; done
+  done
 }
 
-# ---- POLICY ROUTING ----
-get_iface_ip() { ip -o -4 addr show dev "$1" 2>/dev/null | awk '{print $4}' | cut -d/ -f1 | head -n1; }
+rebuild_mangle_mark() {
+  ensure_mangle_chain
+  iptables -t mangle -F "$MCHAIN"
+  # метим по dport (до DNAT), назначение уже реальный SRV
+  iptables -t mangle -A "$MCHAIN" -p udp -d "$SRV" --dport "$P1" -j MARK --set-mark 0x10 -m comment --comment "rist p1→modem1"
+  iptables -t mangle -A "$MCHAIN" -p udp -d "$SRV" --dport "$P2" -j MARK --set-mark 0x11 -m comment --comment "rist p2→modem2"
+  iptables -t mangle -A "$MCHAIN" -p udp -d "$SRV" --dport "$P3" -j MARK --set-mark 0x12 -m comment --comment "rist p3→modem3"
+  iptables -t mangle -A "$MCHAIN" -p udp -d "$SRV" --dport "$P4" -j MARK --set-mark 0x13 -m comment --comment "rist p4→modem4"
+  # сохраним метку в conntrack (на будущее, если потребуется)
+  # iptables -t mangle -A "$MCHAIN" -m mark ! --mark 0x0 -j CONNMARK --save-mark
+}
+
+rebuild_nat_dnat() {
+  ensure_nat_chain
+  iptables -t nat -F "$NCHAIN"
+  # Меняем порт назначения на сервере (IP такой же), из 900X -> 8000
+  iptables -t nat -A "$NCHAIN" -p udp -d "$SRV" --dport "$P1" -j DNAT --to-destination "$SRV:$SRV_PORT" -m comment --comment "rist p1→8000"
+  iptables -t nat -A "$NCHAIN" -p udp -d "$SRV" --dport "$P2" -j DNAT --to-destination "$SRV:$SRV_PORT" -m comment --comment "rist p2→8000"
+  iptables -t nat -A "$NCHAIN" -p udp -d "$SRV" --dport "$P3" -j DNAT --to-destination "$SRV:$SRV_PORT" -m comment --comment "rist p3→8000"
+  iptables -t nat -A "$NCHAIN" -p udp -d "$SRV" --dport "$P4" -j DNAT --to-destination "$SRV:$SRV_PORT" -m comment --comment "rist p4→8000"
+}
+
+# --- ПОЛИТИКА/МАРШРУТЫ ---
+iface_ip() { ip -o -4 addr show dev "$1" 2>/dev/null | awk '{print $4}' | cut -d/ -f1 | head -n1; }
 
 add_link_route() {
-  local tbl="$1" net="$2" dev="$3" src
-  src="$(get_iface_ip "$dev" || true)"
+  local tbl="$1" net="$2" dev="$3" src; src="$(iface_ip "$dev" || true)"
   if [[ -n "${src:-}" ]]; then
     ip route replace "$net" dev "$dev" table "$tbl" proto kernel scope link src "$src"
   else
@@ -139,61 +117,49 @@ add_link_route() {
   fi
 }
 
-add_default_route_src() { ip route replace default via "$2" dev "$3" src "$4" table "$1"; }
+add_def_src() { ip route replace default via "$2" dev "$3" src "$4" table "$1"; }
 
-add_rule_to()   { ip rule del to "$1" table "$2" 2>/dev/null || true; ip rule add to "$1" table "$2" pref "$3"; }
-add_rule_from() { ip rule del from "$1" table "$2" 2>/dev/null || true; ip rule add from "$1" table "$2" pref "$3"; }
+# связываем метки с таблицами
+add_fwmark_rules() {
+  # сначала снесём старые (если есть)
+  for m in 0x10 0x11 0x12 0x13; do
+    while ip rule show | grep -q "fwmark $m "; do ip rule del fwmark "$m" 2>/dev/null || true; done
+  done
+  ip rule add fwmark 0x10 table "$N1" pref 9001
+  ip rule add fwmark 0x11 table "$N2" pref 9002
+  ip rule add fwmark 0x12 table "$N3" pref 9003
+  ip rule add fwmark 0x13 table "$N4" pref 9004
+}
 
-# ---- MAIN ----
 main() {
-  require_root
+  root
+  echo "[*] rt_tables…"; rt_tables
+  echo "[*] sysctl (rp_filter=2)…"; sysctl_loose
 
-  echo "[*] rt_tables mapping…"; write_rt_tables_file
-  echo "[*] Sysctl (rp_filter=2)…"; write_sysctl
-
-  echo "[*] Cleanup: ip rules & route tables…"
-  # ip rules — удалим только наши сочетания (и добавим заново ниже)
-  for spec in \
-    "to $V1 table $N1" "to $V2 table $N2" "to $V3 table $N3" "to $V4 table $N4" \
-    "from $IP1 table $N1" "from $IP2 table $N2" "from $IP3 table $N3" "from $IP4 table $N4"
-  do ip rule del $spec 2>/dev/null || true; done
-
+  echo "[*] flush route tables…"
   ip route flush table "$N1" || ip route flush table "$T1" || true
   ip route flush table "$N2" || ip route flush table "$T2" || true
   ip route flush table "$N3" || ip route flush table "$T3" || true
   ip route flush table "$N4" || ip route flush table "$T4" || true
 
-  echo "[*] Cleanup: nat/OUTPUT legacy DNAT & owner/SNAT…"
-  purge_direct_dnat_virtuals_output
-  purge_owner_snat_to_srv_output
+  echo "[*] build per-table routes…"
+  add_link_route "$N1" "$NET1" "$IF1"; add_def_src "$N1" "$GW1" "$IF1" "$IP1"
+  add_link_route "$N2" "$NET2" "$IF2"; add_def_src "$N2" "$GW2" "$IF2" "$IP2"
+  add_link_route "$N3" "$NET3" "$IF3"; add_def_src "$N3" "$GW3" "$IF3" "$IP3"
+  add_link_route "$N4" "$NET4" "$IF4"; add_def_src "$N4" "$GW4" "$IF4" "$IP4"
 
-  echo "[*] Policy rules (to → from)…"
-  add_rule_to   "$V1" "$N1" 1001
-  add_rule_to   "$V2" "$N2" 1002
-  add_rule_to   "$V3" "$N3" 1003
-  add_rule_to   "$V4" "$N4" 1004
-  add_rule_from "$IP1" "$N1" 1101
-  add_rule_from "$IP2" "$N2" 1102
-  add_rule_from "$IP3" "$N3" 1103
-  add_rule_from "$IP4" "$N4" 1104
+  echo "[*] ip rule (fwmark -> tables)…"
+  add_fwmark_rules
 
-  echo "[*] Routes per table…"
-  add_link_route "$N1" "$NET1" "$IF1"
-  add_link_route "$N2" "$NET2" "$IF2"
-  add_link_route "$N3" "$NET3" "$IF3"
-  add_link_route "$N4" "$NET4" "$IF4"
-  add_default_route_src "$N1" "$GW1" "$IF1" "$IP1"
-  add_default_route_src "$N2" "$GW2" "$IF2" "$IP2"
-  add_default_route_src "$N3" "$GW3" "$IF3" "$IP3"
-  add_default_route_src "$N4" "$GW4" "$IF4" "$IP4"
+  echo "[*] iptables chains…"
+  rebuild_mangle_mark
+  rebuild_nat_dnat
 
-  echo "[*] NAT: OUTPUT → $CHAIN (flush & rebuild)…"
-  rebuild_rist_dnat_chain
-
-  echo "[*] Готово.\n"
-  echo "Проверка:"
-  echo "  iptables -t nat -S OUTPUT | egrep 'jump $CHAIN|10\\.255\\.0\\.'"
-  echo "  iptables -t nat -S $CHAIN"
-  echo "  ip rule show | egrep 'to 10\\.255\\.0\\.|from 192\\.168\\.'"
+  echo "[*] done."
+  echo "Checks:"
+  echo "  iptables -t mangle -vnL $MCHAIN"
+  echo "  iptables -t nat -vnL $NCHAIN"
+  echo "  ip rule show | egrep 'fwmark 0x1[0-3]'"
 }
+
 main "$@"
