@@ -201,17 +201,23 @@ def _primary_ts_port(cfg) -> int:
 
 def build_rist_cmd_single(cfg):
     """
-    Один процесс ristsender:
-      - один -i (первый порт tee)
-      - несколько -o rist://<SRV_IP>:<sender.port>?...
-    Маршрутизация по модемам делается на хосте по dport (9001..9004), а затем DNAT порт -> 8000.
+    ОДИН процесс ristsender:
+      - один -i (первый порт tee из FFmpeg)
+      - несколько -o на ВИРТУАЛЬНЫЕ адреса, которые слушают локальные socat:
+          rist://10.255.0.N:8000?...  (N=1..4)
+    Вся развязка по модемам делается на хосте: owner(uid)->MARK->ip rule.
     """
     r = cfg.get("rist", {}) or {}
 
-    srv_ip   = (r.get("remote_ip") or "").strip()
-    if not srv_ip:
+    # вход — первый UDP порт tee
+    in_port = _primary_ts_port(cfg)
+    inurl   = f"udp://127.0.0.1:{in_port}"
+
+    enabled = [(i, s) for i, s in enumerate(r.get("senders", []) or []) if s.get("enabled", True)]
+    if not enabled:
         return None, 0, 0, "rist", False
 
+    # общие параметры RIST
     buf_ms   = int(r.get("buffer_ms", 800))
     bw_kbps  = int(r.get("bandwidth_kbps", 12000))
     reorder  = int(r.get("reorder_buffer_ms", 120))
@@ -222,20 +228,14 @@ def build_rist_cmd_single(cfg):
     aes_type = int(enc.get("type", 128))
     secret   = (enc.get("secret") or "").strip()
 
-    # вход — первый UDP порт tee
-    in_port = _primary_ts_port(cfg)
-    inurl   = f"udp://127.0.0.1:{in_port}"
-
-    enabled = [(i, s) for i, s in enumerate(r.get("senders", []) or []) if s.get("enabled", True)]
-    if not enabled:
-        return None, 0, 0, "rist", False
-
     argv = ["ristsender", "-i", inurl]
+
     for idx, s in enabled:
-        # per-sender порт (до DNAT): 9001..9004
-        dport  = int(s.get("port", 9001 + idx))
+        vip    = s.get("virt_ip", f"10.255.0.{idx+1}")
+        dport  = int(s.get("virt_port", 8000))  # ВСЕГДА 8000 в нашей схеме
         cname  = s.get("cname", f"m{idx}")
         weight = int(s.get("weight", 5))
+
         params = [
             f"cname={cname}",
             f"buffer={buf_ms}",
@@ -247,12 +247,13 @@ def build_rist_cmd_single(cfg):
         ]
         if use_enc and aes_type in (128, 256) and secret:
             params += [f"aes-type={aes_type}", f"secret={secret}"]
-        outurl = f"rist://{srv_ip}:{dport}?" + "&".join(params)
-        argv += ["-o", outurl]
+
+        argv += ["-o", f"rist://{vip}:{dport}?" + "&".join(params)]
 
     run_uid = int(r.get("run_uid", 0))
     run_gid = int(r.get("run_gid", 0))
     return argv, run_uid, run_gid, "rist", True
+
 
 
 # -----------------------------
@@ -328,7 +329,7 @@ def index():
         enabled = bool(s.get("enabled", True))
         weight = int(s.get("weight", 5))
         virt_ip = s.get("virt_ip", f"10.255.0.{i+1}")
-        virt_pt = int(s.get("port", 9000+i+1))
+        virt_pt = int(s.get("virt_port", 8000))
         btn_label = "Выключить" if enabled else "Включить"
         rows += f"""
         <tr>
@@ -458,7 +459,7 @@ def status():
                 "enabled": bool(s.get("enabled", True)),
                 "weight": int(s.get("weight", 5)),
                 "virt_ip": s.get("virt_ip", f"10.255.0.{i+1}"),
-                "virt_port": int(s.get("port", 9000+i+1)),
+                "virt_port": int(s.get("virt_port", 8000)),
                 "status": running if s.get("enabled", True) else "disabled"
             })
         data = {

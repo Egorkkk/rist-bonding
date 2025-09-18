@@ -16,3 +16,9 @@ paths:
 #    source: udp://127.0.0.1:10010
 #    sourceOnDemand: yes      # опционально: поднимать при первом запросе
 
+rtsp: yes
+protocols: [udp, tcp]
+
+rtspAddress: :8554
+rtpAddress: :8100
+rtcpAddress: :8101

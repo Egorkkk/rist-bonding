@@ -23,7 +23,7 @@ rist:
     enabled: true
     interface: modem1
     gateway: 192.168.8.1
-    port: 9001
+    virt_ip: 192.168.100.1
   - id: 1
     cname: m1
     uid: 971
@@ -32,7 +32,7 @@ rist:
     enabled: true
     interface: modem2
     gateway: 192.168.14.1
-    port: 9002
+    virt_ip: 192.168.100.2
   - id: 2
     cname: m2
     uid: 970
@@ -41,7 +41,7 @@ rist:
     weight: 5
     interface: modem3
     gateway: 192.168.38.3
-    port: 9003
+    virt_ip: 192.168.100.3
   - id: 3
     cname: m3
     uid: 969
@@ -50,7 +50,7 @@ rist:
     enabled: true
     interface: modem4
     gateway: 192.168.11.1
-    port: 9004
+    virt_ip: 192.168.100.4
 ingest:
   source: test
   uvc_device: /dev/video0

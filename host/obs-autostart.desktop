@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Exec=/home/egorkkk/.local/bin/start-obs-clean.sh
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=OBS AutoStart
+Comment=Launch OBS on login
