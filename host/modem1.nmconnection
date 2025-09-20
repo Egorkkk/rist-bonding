@@ -8,7 +8,7 @@ timestamp=1757328641
 [ethernet]
 
 [ipv4]
-address1=192.168.8.198/24
+address1=192.168.8.199/24
 gateway=192.168.8.1
 method=manual
 never-default=true

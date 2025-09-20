@@ -4,12 +4,12 @@ rist:
   remote_ip: 83.222.26.3
   port: 8000
   profile: main
-  buffer_ms: 1500
+  buffer_ms: 2500
   bandwidth_kbps: 2000
   stream_id: 1000
-  reorder_buffer_ms: 800
+  reorder_buffer_ms: 400
   rtt_min_ms: 80
-  rtt_max_ms: 600
+  rtt_max_ms: 400
   encryption:
     enabled: true
     type: 128
@@ -24,6 +24,7 @@ rist:
     interface: modem1
     gateway: 192.168.8.1
     virt_ip: 192.168.100.1
+    port: 10001
   - id: 1
     cname: m1
     uid: 971
@@ -33,6 +34,7 @@ rist:
     interface: modem2
     gateway: 192.168.14.1
     virt_ip: 192.168.100.2
+    port: 10002
   - id: 2
     cname: m2
     uid: 970
@@ -42,6 +44,7 @@ rist:
     interface: modem3
     gateway: 192.168.38.3
     virt_ip: 192.168.100.3
+    port: 10003
   - id: 3
     cname: m3
     uid: 969
@@ -51,6 +54,7 @@ rist:
     interface: modem4
     gateway: 192.168.11.1
     virt_ip: 192.168.100.4
+    port: 10004
 ingest:
   source: test
   uvc_device: /dev/video0

@@ -203,9 +203,8 @@ def build_rist_cmd_single(cfg):
     """
     ОДИН процесс ristsender:
       - один -i (первый порт tee из FFmpeg)
-      - несколько -o на ВИРТУАЛЬНЫЕ адреса, которые слушают локальные socat:
-          rist://10.255.0.N:8000?...  (N=1..4)
-    Вся развязка по модемам делается на хосте: owner(uid)->MARK->ip rule.
+      - несколько -o на ВИРТУАЛЬНЫЕ адреса (VIP), порт берём из конфига:
+          senders[i].port  | senders[i].virt_port | rist.default_port | 8000
     """
     r = cfg.get("rist", {}) or {}
 
@@ -228,13 +227,17 @@ def build_rist_cmd_single(cfg):
     aes_type = int(enc.get("type", 128))
     secret   = (enc.get("secret") or "").strip()
 
+    # глобальный дефолт порта для всех -o (можно переопределить в sender)
+    default_port = int(r.get("default_port", 8000))
+
     argv = ["ristsender", "-i", inurl]
 
     for idx, s in enabled:
-        vip    = s.get("virt_ip", f"10.255.0.{idx+1}")
-        dport  = int(s.get("virt_port", 8000))  # ВСЕГДА 8000 в нашей схеме
-        cname  = s.get("cname", f"m{idx}")
-        weight = int(s.get("weight", 5))
+        vip     = s.get("virt_ip", f"10.255.0.{idx+1}")
+        # приоритет: per-sender "port" → "virt_port" → rist.default_port → 8000
+        dport   = int(s.get("port", s.get("virt_port", default_port)))
+        cname   = s.get("cname", f"m{idx}")
+        weight  = int(s.get("weight", 5))
 
         params = [
             f"cname={cname}",
@@ -253,7 +256,6 @@ def build_rist_cmd_single(cfg):
     run_uid = int(r.get("run_uid", 0))
     run_gid = int(r.get("run_gid", 0))
     return argv, run_uid, run_gid, "rist", True
-
 
 
 # -----------------------------

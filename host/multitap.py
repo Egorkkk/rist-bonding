@@ -16,7 +16,7 @@ import argparse, asyncio, curses, os, re, signal, subprocess, sys, time
 # ==========================
 DEFAULT_INTERFACES = ["modem1", "modem2", "modem3", "modem4"]
 PING_SOURCE_IP = {
-    "modem1": "192.168.8.198",
+    "modem1": "192.168.8.199",
     "modem2": "192.168.11.100",
     "modem3": "192.168.14.100",
     "modem4": "192.168.38.100",

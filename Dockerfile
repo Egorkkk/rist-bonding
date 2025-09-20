@@ -5,11 +5,11 @@ FROM bluenviron/mediamtx:latest AS mtx
 FROM ubuntu:24.04
 
 ARG DEBIAN_FRONTEND=noninteractive
-
-# На всякий случай включим universe (если вдруг rist-tools не найдётся)
-RUN sed -n 'p' /etc/apt/sources.list && \
-    apt-get update && apt-get install -y software-properties-common && \
-    add-apt-repository universe
+RUN set -eux; \
+    apt-get update -o Acquire::Retries=5 -o Acquire::ForceIPv4=true; \
+    apt-get install -y --no-install-recommends \
+        ca-certificates curl gnupg; \
+    rm -rf /var/lib/apt/lists/*
 
 # ffmpeg, ristsender, python + pip, curl, certs
 RUN apt-get update && apt-get install -y \
